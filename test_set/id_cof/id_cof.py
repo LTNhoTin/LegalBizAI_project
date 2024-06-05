@@ -8,18 +8,17 @@ df = pd.read_csv(csv_file_path)
 
 json_file_path = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/id_cof/all_chunk.json'
 data = pd.read_json(json_file_path)
-
-# Tạo cột id nếu chưa có
+#tạo cột id nếu chưa có
 if 'id' not in df.columns:
     df['id'] = pd.Series(dtype='object')
-# Tạo cột type_question nếu chưa có
+#tạo cột type_question nếu chưa có
 if 'type_question' not in df.columns:
     df['type_question'] = pd.Series(dtype='str')
 
-# Hàm xử lý để chỉ giữ lại các điều luật và nghị định
+# Hàm xử lý để chỉ giữ lại các điều luật
 def extract_articles(reference):
-    # Biểu thức tìm "Điều ... Luật Doanh nghiệp" hoặc "Điều ... Nghị định"
-    pattern = re.compile(r'Điều \d+ (Luật Doanh nghiệp \d{4}|Nghị định \d+/\d{4}/NĐ-CP)')
+    # Biểu thức tìm "Điều mấy"
+    pattern = re.compile(r'Điều \d+')
     matches = pattern.findall(reference)
     return ', '.join(matches)
 
@@ -29,14 +28,8 @@ def match_references(reference, data):
     references = reference.split(', ')
     matches = pd.DataFrame()
     for ref in references:
-        if 'Luật Doanh nghiệp' in ref:
-            ref_short = re.search(r'Điều \d+', ref).group()
-            ref_matches = data[data['title'].str.contains(f'{ref_short}.*Luật Doanh nghiệp', na=False, case=False)]
-        elif 'Nghị định' in ref:
-            ref_short = re.search(r'Điều \d+', ref).group()
-            ref_matches = data[data['title'].str.contains(f'{ref_short}.*Nghị định', na=False, case=False)]
+        ref_matches = data[data['title'].str.contains(ref.strip(), na=False)]
         matches = pd.concat([matches, ref_matches])
-    
     return matches
 
 root = tk.Tk()
@@ -115,7 +108,6 @@ def next_question():
 def save_id(event=None):
     global current_index
     ids = [entry.get() for entry in id_entries]
-    ids = [id.strip() for sublist in ids for id in sublist.split(',')]  # Tách các ID bởi dấu phẩy
     question_type = type_entry.get()
     df.at[current_index, 'id'] = str(ids)
     df.at[current_index, 'type_question'] = question_type
@@ -145,7 +137,7 @@ question_text.config(state=tk.DISABLED)
 
 passage_frame = tk.LabelFrame(root, text="Các khớp có thể", padx=10, pady=10)
 passage_frame.pack(fill="both", expand="yes", padx=10, pady=10)
-passage_text = scrolledtext.ScrolledText(passage_frame, height=10, wrap=tk.WORD, font=("Helvetica", 16))
+passage_text = scrolledtext.ScrolledText(passage_frame, height=20, wrap=tk.WORD, font=("Helvetica", 16))
 passage_text.pack(fill="both", expand=True)
 passage_text.tag_config("red", foreground="red")
 passage_text.tag_config("green", foreground="green")
