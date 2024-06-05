@@ -16,10 +16,10 @@ if 'id' not in df.columns:
 if 'type_question' not in df.columns:
     df['type_question'] = pd.Series(dtype='str')
 
-# Hàm xử lý để chỉ giữ lại các điều luật
+# Hàm xử lý để chỉ giữ lại các điều luật và nghị định
 def extract_articles(reference):
     # Biểu thức tìm "Điều mấy" trong Luật doanh nghiệp hoặc Nghị định
-    pattern = re.compile(r'Điều \d+ Luật doanh nghiệp|Điều \d+ Nghị định')
+    pattern = re.compile(r'Điều \d+ (Luật doanh nghiệp \d{4}|Nghị định \d+/\d{4}/NĐ-CP)')
     matches = pattern.findall(reference)
     return ', '.join(matches)
 
