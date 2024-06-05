@@ -18,8 +18,8 @@ if 'type_question' not in df.columns:
 
 # Hàm xử lý để chỉ giữ lại các điều luật và nghị định
 def extract_articles(reference):
-    # Biểu thức tìm "Điều mấy" trong Luật doanh nghiệp hoặc Nghị định
-    pattern = re.compile(r'Điều \d+ (Luật doanh nghiệp \d{4}|Nghị định \d+/\d{4}/NĐ-CP)')
+    # Biểu thức tìm "Điều ... Luật Doanh nghiệp" hoặc "Điều ... Nghị định"
+    pattern = re.compile(r'Điều \d+ (Luật Doanh nghiệp \d{4}|Nghị định \d+/\d{4}/NĐ-CP)')
     matches = pattern.findall(reference)
     return ', '.join(matches)
 
@@ -29,9 +29,14 @@ def match_references(reference, data):
     references = reference.split(', ')
     matches = pd.DataFrame()
     for ref in references:
-        # Sử dụng contains để tìm kiếm các tiêu đề chứa tham chiếu
-        ref_matches = data[data['title'].str.contains(ref.strip(), na=False, case=False)]
+        if 'Luật Doanh nghiệp' in ref:
+            ref_short = re.search(r'Điều \d+', ref).group()
+            ref_matches = data[data['title'].str.contains(f'{ref_short}.*Luật Doanh nghiệp', na=False, case=False)]
+        elif 'Nghị định' in ref:
+            ref_short = re.search(r'Điều \d+', ref).group()
+            ref_matches = data[data['title'].str.contains(f'{ref_short}.*Nghị định', na=False, case=False)]
         matches = pd.concat([matches, ref_matches])
+    
     return matches
 
 root = tk.Tk()
