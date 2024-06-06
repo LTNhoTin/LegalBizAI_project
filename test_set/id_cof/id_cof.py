@@ -27,7 +27,7 @@ df = pd.json_normalize(df)
 item = df.columns
 
 if 'chunk_ids' not in df.columns:
-    df['chunk_ids'] = ""
+    df['chunk_ids'] = [[] for _ in range(len(df))]
 
 if 'type_question' not in df.columns:
     df['type_question'] = ""
@@ -52,9 +52,8 @@ root.title("Gán ID và loại câu hỏi")
 root.geometry("1000x900")
 
 def find_first_empty_id(df):
-    id_cl = df["chunk_ids"].tolist()
-    for index in range(len(id_cl)):
-        if not id_cl[index]:
+    for index, chunk_ids in enumerate(df["chunk_ids"]):
+        if not chunk_ids:
             return index
     return 0
 
@@ -125,8 +124,9 @@ def next_question():
 def save_id(event=None):
     global current_index
     ids = id_entries[0].get()
+    ids_list = [int(id.strip()) for id in ids.split(',')]
     question_type = type_entry.get()
-    df.at[current_index, 'chunk_ids'] = ids
+    df.at[current_index, 'chunk_ids'] = ids_list
     df.at[current_index, 'type_question'] = question_type
     current_index += 1
     if current_index < len(df):
