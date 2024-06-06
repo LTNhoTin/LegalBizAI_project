@@ -35,7 +35,6 @@ if 'type_question' not in df.columns:
 if 'chunk_range' not in df.columns:
     df['chunk_range'] = ""
 
-# Function to match references and get the chunk_ids ranges
 def match_references_and_assign_chunk_ranges(references):
     chunk_ranges = []
     for ref in references:
@@ -46,7 +45,6 @@ def match_references_and_assign_chunk_ranges(references):
             chunk_ranges.extend([row['id'] for row in matched_rows])
     return chunk_ranges
 
-# Apply the function to assign chunk_ranges to each item in df
 df["chunk_range"] = df["references"].apply(match_references_and_assign_chunk_ranges)
 
 root = tk.Tk()
@@ -75,12 +73,12 @@ def create_id_entries(reference_count):
 
     if reference_count > 1:
         label = tk.Label(id_entries_frame, text="Cảnh báo: Câu này có nhiều hơn một reference!", font=("Helvetica", 16), fg="red")
-        label.pack(side=tk.LEFT)
+        label.grid(row=0, column=0, columnspan=2)
     
     label = tk.Label(id_entries_frame, text="Nhập ID:", font=("Helvetica", 16))
-    label.pack(side=tk.LEFT)
+    label.grid(row=1, column=0, padx=5, pady=5)
     entry = tk.Entry(id_entries_frame, font=("Helvetica", 16))
-    entry.pack(side=tk.LEFT, padx=5)
+    entry.grid(row=1, column=1, padx=5, pady=5)
     id_entries.append(entry)
 
 def next_question():
@@ -120,7 +118,6 @@ def next_question():
         passage_text.insert(tk.END, "Không có khớp nào tìm thấy.")
     passage_text.config(state=tk.DISABLED)
 
-    # Tạo các ô nhập ID động
     references = row['references']
     create_id_entries(len(references))
     update_progress()
@@ -147,45 +144,57 @@ def previous_question():
     else:
         messagebox.showwarning("Cảnh báo", "Đây là câu hỏi đầu tiên.")
 
+root.grid_rowconfigure(0, weight=1)
+root.grid_columnconfigure(0, weight=1)
+
 question_frame = tk.LabelFrame(root, text="Câu hỏi và câu trả lời", padx=10, pady=10)
-question_frame.pack(fill="both", expand="yes", padx=10, pady=10)
+question_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
+question_frame.grid_rowconfigure(0, weight=1)
+question_frame.grid_columnconfigure(0, weight=1)
+
 question_text = scrolledtext.ScrolledText(question_frame, height=10, wrap=tk.WORD, font=("Helvetica", 16))
-question_text.pack(fill="both", expand=True)
+question_text.grid(row=0, column=0, sticky="nsew")
 question_text.tag_config("red", foreground="red")
 question_text.tag_config("green", foreground="green")
 question_text.tag_config("blue", foreground="blue")
 question_text.config(state=tk.DISABLED)
 
 passage_frame = tk.LabelFrame(root, text="Các khớp có thể", padx=10, pady=10)
-passage_frame.pack(fill="both", expand="yes", padx=10, pady=10)
+passage_frame.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+passage_frame.grid_rowconfigure(0, weight=1)
+passage_frame.grid_columnconfigure(0, weight=1)
+
 passage_text = scrolledtext.ScrolledText(passage_frame, height=20, wrap=tk.WORD, font=("Helvetica", 16))
-passage_text.pack(fill="both", expand=True)
+passage_text.grid(row=0, column=0, sticky="nsew")
 passage_text.tag_config("red", foreground="red")
 passage_text.tag_config("green", foreground="green")
 passage_text.config(state=tk.DISABLED)
 
 id_progress_frame = tk.Frame(root)
-id_progress_frame.pack(pady=10)
+id_progress_frame.grid(row=2, column=0, sticky="ew", padx=10, pady=10)
+id_progress_frame.grid_columnconfigure(1, weight=1)
 
 id_entries_frame = tk.Frame(id_progress_frame)
-id_entries_frame.pack()
+id_entries_frame.grid(row=0, column=0, columnspan=3, sticky="ew")
 
 type_label = tk.Label(id_progress_frame, text="Loại câu hỏi:", font=("Helvetica", 16))
-type_label.pack(side=tk.LEFT)
+type_label.grid(row=1, column=0, padx=5, pady=5)
 type_entry = tk.Entry(id_progress_frame, font=("Helvetica", 16))
-type_entry.pack(side=tk.LEFT, padx=5)
+type_entry.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
 type_entry.bind("<Return>", save_id)
 
 progress_label = tk.Label(id_progress_frame, text="", font=("Helvetica", 16))
-progress_label.pack(side=tk.LEFT, padx=10)
+progress_label.grid(row=1, column=2, padx=10, pady=5)
 update_progress()
 
 button_frame = tk.Frame(root)
-button_frame.pack(pady=10)
+button_frame.grid(row=3, column=0, padx=10, pady=10, sticky="ew")
+
 save_button = tk.Button(button_frame, text="Lưu ID và loại câu hỏi", command=save_id, font=("Helvetica", 14))
 save_button.pack(side=tk.LEFT, padx=5)
 back_button = tk.Button(button_frame, text="Quay lại câu hỏi trước", command=previous_question, font=("Helvetica", 14))
 back_button.pack(side=tk.LEFT, padx=5)
 
 next_question()
+
 root.mainloop()
