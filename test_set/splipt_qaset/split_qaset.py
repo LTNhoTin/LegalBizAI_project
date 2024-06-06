@@ -11,7 +11,7 @@ items_per_file = num_items // 4
 # Create the smaller JSON files
 for i in range(4):
     start_index = i * items_per_file
-    if i == 3:  # Make sure the last file gets any remaining items
+    if i == 3: 
         end_index = num_items
     else:
         end_index = (i + 1) * items_per_file
