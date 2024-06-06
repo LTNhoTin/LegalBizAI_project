@@ -4,8 +4,8 @@ from tkinter import messagebox, scrolledtext
 import json
 import pandas as pd
 
-qaset_file = 'qaset.json'
-all_chunk_file = 'all_chunk.json'
+qaset_file = 'test_set/id_cof/qaset.json'
+all_chunk_file = 'test_set/id_cof/all_chunk.json'
 
 with open(qaset_file, 'r', encoding='utf-8') as f:
     df = json.load(f)
@@ -47,9 +47,17 @@ def match_references_and_assign_chunk_ranges(references):
 
 df["chunk_range"] = df["references"].apply(match_references_and_assign_chunk_ranges)
 
+def adjust_window_size(root):
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    # Adjusting the window size to 80% of the screen size
+    width = int(screen_width * 0.8)
+    height = int(screen_height * 0.8)
+    root.geometry(f"{width}x{height}")
+
 root = tk.Tk()
 root.title("Gán ID và loại câu hỏi")
-root.geometry("1000x900")
+adjust_window_size(root)
 
 def find_first_empty_id(df):
     for index, chunk_ids in enumerate(df["chunk_ids"]):
@@ -148,6 +156,9 @@ def previous_question():
         messagebox.showwarning("Cảnh báo", "Đây là câu hỏi đầu tiên.")
 
 root.grid_rowconfigure(0, weight=1)
+root.grid_rowconfigure(1, weight=1)
+root.grid_rowconfigure(2, weight=0)
+root.grid_rowconfigure(3, weight=0)
 root.grid_columnconfigure(0, weight=1)
 
 question_frame = tk.LabelFrame(root, text="Câu hỏi và câu trả lời", padx=10, pady=10)
@@ -155,7 +166,7 @@ question_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 question_frame.grid_rowconfigure(0, weight=1)
 question_frame.grid_columnconfigure(0, weight=1)
 
-question_text = scrolledtext.ScrolledText(question_frame, height=10, wrap=tk.WORD, font=("Helvetica", 16))
+question_text = scrolledtext.ScrolledText(question_frame, wrap=tk.WORD, font=("Helvetica", 16))
 question_text.grid(row=0, column=0, sticky="nsew")
 question_text.tag_config("red", foreground="red")
 question_text.tag_config("green", foreground="green")
@@ -167,7 +178,7 @@ passage_frame.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
 passage_frame.grid_rowconfigure(0, weight=1)
 passage_frame.grid_columnconfigure(0, weight=1)
 
-passage_text = scrolledtext.ScrolledText(passage_frame, height=20, wrap=tk.WORD, font=("Helvetica", 16))
+passage_text = scrolledtext.ScrolledText(passage_frame, wrap=tk.WORD, font=("Helvetica", 16))
 passage_text.grid(row=0, column=0, sticky="nsew")
 passage_text.tag_config("red", foreground="red")
 passage_text.tag_config("green", foreground="green")
