@@ -17,7 +17,7 @@ for i in range(4):
         end_index = (i + 1) * items_per_file
     
     subset = data[start_index:end_index]
-    output_filename = f'/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/splipt_qaset{i + 1}.json'
+    output_filename = f'/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/splipt_qaset/qaset{i + 1}.json'
     
     with open(output_filename, 'w', encoding='utf-8') as output_file:
         json.dump(subset, output_file, ensure_ascii=False, indent=4)

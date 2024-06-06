@@ -8,22 +8,21 @@ all_chunk.json: File chứa danh sách các điều luật và nghị định v�
 
 Bước 2: Chạy công cụ
 Mở tệp mã nguồn Python.
-Chạy tệp mã nguồn bằng cách sử dụng trình biên dịch Python hoặc IDE ưa thích của bạn. Ví dụ: python script.py.
+Chạy tệp mã nguồn bằng cách sử dụng trình biên dịch Python hoặc IDE ưa thích của bạn.
 Bước 3: Giao diện công cụ
 Khi công cụ được chạy, một cửa sổ giao diện sẽ xuất hiện với các phần chính sau:
 
 Khung câu hỏi và câu trả lời:
-
 Question: Hiển thị câu hỏi hiện tại.
 Answer: Hiển thị câu trả lời cho câu hỏi đó.
 Reference: Hiển thị các điều luật và nghị định liên quan đến câu hỏi.
-Khung các khớp có thể:
 
+Khung các khớp có thể:
 ID: Hiển thị các ID của các điều luật và nghị định khớp với câu hỏi.
 Title: Hiển thị tiêu đề của điều luật và nghị định.
 Passage: Hiển thị đoạn văn bản của điều luật và nghị định.
-Khung nhập ID và loại câu hỏi:
 
+Khung nhập ID và loại câu hỏi:
 Nhập ID: Ô nhập cho phép bạn nhập ID cho câu hỏi hiện tại.
 Loại câu hỏi: Ô nhập cho phép bạn nhập loại câu hỏi.
 Nút lưu và điều hướng:
