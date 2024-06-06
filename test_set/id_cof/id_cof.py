@@ -63,7 +63,7 @@ def update_progress():
     progress_label.config(text=f"{current_index}/{len(df)} câu đã hoàn thành")
     root.update_idletasks()
 
-def create_id_entries(reference_count):
+def create_id_entries(reference_count, saved_ids):
     for widget in id_entries_frame.winfo_children():
         widget.destroy()
 
@@ -79,6 +79,9 @@ def create_id_entries(reference_count):
     entry = tk.Entry(id_entries_frame, font=("Helvetica", 16))
     entry.grid(row=1, column=1, padx=5, pady=5)
     id_entries.append(entry)
+
+    if saved_ids:
+        entry.insert(0, ','.join(map(str, saved_ids)))
 
 def next_question():
     global current_index
@@ -118,7 +121,7 @@ def next_question():
     passage_text.config(state=tk.DISABLED)
 
     references = row['references']
-    create_id_entries(len(references))
+    create_id_entries(len(references), row['chunk_ids'])
     update_progress()
 
 def save_id(event=None):
