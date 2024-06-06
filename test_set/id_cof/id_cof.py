@@ -1,36 +1,56 @@
-import pandas as pd
 import re
 import tkinter as tk
 from tkinter import simpledialog, messagebox, scrolledtext
+import json
+import pandas as pd
 
-qa = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/id_cof/qaset.json'
-df = pd.read_json(qa)
+v = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/id_cof/qaset.json'
+with open(v, 'r', encoding='utf-8') as f:
+    df = json.load(f)
 
-ck = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/id_cof/all_chunk.json'
-data = pd.read_json(ck)
-#tạo cột id nếu chưa có
-if 'id' not in df.columns:
-    df['id'] = pd.Series(dtype='object')
-#tạo cột type_question nếu chưa có
+json_file_path = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/id_cof/all_chunk.json'
+with open(json_file_path, 'r', encoding='utf-8') as f:
+    data = json.load(f)
+
+# Define the chunk range mapping
+chunk_range = {
+    "Luật Doanh nghiệp 2020": [0, 433],
+    "Nghị định 01/2021/NĐ-CP": [434, 683],
+    "Nghị định 16/2023/NĐ-CP": [684, 716],
+    "Nghị định 23/2022/NĐ-CP": [717, 813],
+    "Nghị định 47/2021/NĐ-CP": [814, 865],
+    "Nghị định 122/2021/NĐ-CP": [866, 1001],
+    "Nghị định 153/2020/NĐ-CP": [1002, 1114]
+}
+df = pd.json_normalize(df)
+item = df.columns
+
+# Add chunk_ids and type_question fields if they don't exist
+if 'chunk_ids' not in df.columns:
+    df['chunk_ids'] = ""
+
 if 'type_question' not in df.columns:
-    df['type_question'] = pd.Series(dtype='str')
+    df['type_question'] = ""
 
-# Hàm xử lý để chỉ giữ lại các điều luật
+# Function to extract articles
 def extract_articles(reference):
-    # Biểu thức tìm "Điều mấy"
     pattern = re.compile(r'Điều \d+')
     matches = pattern.findall(reference)
     return ', '.join(matches)
 
-df['references'] = df['references'].apply(extract_articles)
-
-def match_references(reference, data):
-    references = reference.split(', ')
-    matches = pd.DataFrame()
+# Function to match references and get the chunk_ids ranges
+def match_references_and_assign_chunk_ids(references):
+    chunk_ids = []
     for ref in references:
-        ref_matches = data[data['title'].str.contains(ref.strip(), na=False)]
-        matches = pd.concat([matches, ref_matches])
-    return matches
+        article, document = ref
+        if document in chunk_range:
+            chunk_ids_range = chunk_range[document]
+            matched_rows = [d for d in data if re.search(article, d['title']) and chunk_ids_range[0] <= d['id'] <= chunk_ids_range[1]]
+            chunk_ids.extend([row['id'] for row in matched_rows])
+    return chunk_ids
+
+# Apply the function to assign chunk_idss to each item in df
+df["chunk_ids"] = df["references"].apply(match_references_and_assign_chunk_ids)
 
 root = tk.Tk()
 root.title("Gán ID và loại câu hỏi")
@@ -38,10 +58,11 @@ root.geometry("1000x900")
 
 # Tìm ô đầu tiên của câu hỏi chưa có ID
 def find_first_empty_id(df):
-    empty_id_index = df[df['id'].isna()].index
-    if not empty_id_index.empty:
-        return empty_id_index[0]
-    return len(df)
+    id_cl = df["chunk_ids"].tolist()
+    for index in range(len(id_cl)):
+        if not id_cl[index]:
+            return index
+    return -1
 
 current_index = find_first_empty_id(df)
 
@@ -69,8 +90,6 @@ def next_question():
         messagebox.showinfo("Hoàn thành", "Bạn đã gán ID cho tất cả các câu hỏi.")
         return
 
-    row = df.iloc[current_index]
-    matches = match_references(row['references'], data)
 
     question_text.config(state=tk.NORMAL)
     question_text.delete(1.0, tk.END)
@@ -84,24 +103,26 @@ def next_question():
 
     # Hiển thị type_question nếu có
     type_entry.delete(0, tk.END)
-    if pd.notna(row['type_question']):
+    if row['type_question']:
         type_entry.insert(0, row['type_question'])
 
     passage_text.config(state=tk.NORMAL)
     passage_text.delete(1.0, tk.END)
-    if not matches.empty:
-        for i, match in matches.iterrows():
-            passage_text.insert(tk.END, "ID: ", "red")
-            passage_text.insert(tk.END, f"{match['id']}\n", "red")
-            passage_text.insert(tk.END, "Title: ", "green")
-            passage_text.insert(tk.END, f"{match['title']}\n", "green")
-            passage_text.insert(tk.END, f"Passage: {match['passage']}\n{'-'*50}\n")
+    if row['chunk_idss']:
+        for chunk_ids in row['chunk_idss']:
+            match = next((d for d in data if d['id'] == chunk_ids), None)
+            if match:
+                passage_text.insert(tk.END, "ID: ", "red")
+                passage_text.insert(tk.END, f"{match['id']}\n", "red")
+                passage_text.insert(tk.END, "Title: ", "green")
+                passage_text.insert(tk.END, f"{match['title']}\n", "green")
+                passage_text.insert(tk.END, f"Passage: {match['passage']}\n{'-'*50}\n")
     else:
         passage_text.insert(tk.END, "Không có khớp nào tìm thấy.")
     passage_text.config(state=tk.DISABLED)
 
     # Tạo các ô nhập ID động
-    references = row['references'].split(', ')
+    references = row['references']
     create_id_entries(len(references))
     update_progress()
 
@@ -109,14 +130,15 @@ def save_id(event=None):
     global current_index
     ids = [entry.get() for entry in id_entries]
     question_type = type_entry.get()
-    df.at[current_index, 'id'] = str(ids)
-    df.at[current_index, 'type_question'] = question_type
+    df[current_index]['chunk_idss'] = ids
+    df[current_index]['type_question'] = question_type
     current_index += 1
     if current_index < len(df):
         next_question()
     else:
         messagebox.showinfo("Hoàn thành", "Bạn đã gán ID cho tất cả các câu hỏi.")
-    df.to_csv(csv_file_path, index=False)  # Lưu trực tiếp vào tệp CSV
+    with open(v, 'w', encoding='utf-8') as f:
+        json.dump(df, f, ensure_ascii=False, indent=4)
 
 def previous_question():
     global current_index
