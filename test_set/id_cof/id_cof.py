@@ -3,11 +3,11 @@ import re
 import tkinter as tk
 from tkinter import simpledialog, messagebox, scrolledtext
 
-csv_file_path = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/id_cof/qaset.csv'
-df = pd.read_csv(csv_file_path)
+qa = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/id_cof/qaset.json'
+df = pd.read_json(qa)
 
-json_file_path = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/id_cof/all_chunk.json'
-data = pd.read_json(json_file_path)
+ck = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/test_set/id_cof/all_chunk.json'
+data = pd.read_json(ck)
 #tạo cột id nếu chưa có
 if 'id' not in df.columns:
     df['id'] = pd.Series(dtype='object')
