@@ -6,8 +6,8 @@ import pandas as pd
 
 font_content = ("Helvetica", 14)
 
-qaset_file = r"Testing Data\id_cof\labelling_part\qaset4.json"
-all_chunk_file = r"Testing Data\id_cof\all_chunk.json"
+qaset_file = r"test_set/id_cof/qaset.json"
+all_chunk_file = r"test_set/id_cof/qaset.json"
 
 with open(qaset_file, "r", encoding="utf-8") as f:
     df = json.load(f)
