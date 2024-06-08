@@ -2312,7 +2312,7 @@
                 "Nghị định 16\/2023\/NĐ-CP"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Doanh nghiệp giải thể do hết thời hạn hoạt động ghi trong Điều lệ tiến hành thủ tục như thế nào?",
@@ -2642,7 +2642,7 @@
                 "Nghị định 47\/2021\/NĐ-CP"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Kiểm soát viên tại doanh nghiệp do Nhà nước nắm giữ 100% vốn điều lệ có nghĩa vụ giám sát thực hiện các dự án đầu tư nào?",
@@ -3809,7 +3809,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Khi muốn hiệu đính thông tin trên Giấy chứng nhận đăng ký doanh nghiệp thì doanh nghiệp gửi văn bản đề nghị đến đâu?",
@@ -4489,7 +4489,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Doanh nghiệp còn nợ tiền cá nhân khác thì có thể tiến hành giải thể doanh nghiệp được không?",
@@ -5135,7 +5135,7 @@
                 "Nghị định 01\/2021\/NĐ-CP"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Muốn thành lập hộ kinh doanh cá thể cần phải đáp ứng những điều kiện gì?",
@@ -5436,7 +5436,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"query"
+        "type_question":"verify"
     },
     {
         "question":"Bổ nhiệm Giám đốc điều hành Công ty TNHH 2 thành viên không phải là nhân viên của công ty được không?",
@@ -6981,7 +6981,7 @@
                 "Nghị định 01\/2020\/NĐ-CP"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Như thế nào là địa điểm kinh doanh hợp pháp?",
@@ -7682,7 +7682,7 @@
                 "Nghị định 01\/2021\/NĐ-CP"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Một người đang giữ chức vụ Giám đốc của Công ty hợp danh thì có được làm Giám đốc của Doanh nghiệp nhà nước hay không?",
@@ -7770,7 +7770,7 @@
                 "Nghị định 122\/2021\/NĐ-CP"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Công ty mẹ có quyền chi phối công ty con như thế nào?",
@@ -8295,7 +8295,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Chủ tọa cuộc họp Đại hội đồng cổ đông có được phép cử từ 2 Thư ký cuộc họp trở lên hay không?",
@@ -8376,7 +8376,7 @@
                 "Nghị định 01\/2021\/NĐ-CP"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Không bảo đảm công bằng, minh bạch trong hoạt động đấu thầu bị xử lý hành chính thế nào?",
@@ -8402,7 +8402,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Tài sản nào được dùng để góp vốn điều lệ?",
@@ -9353,7 +9353,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Biên bản giao nhận tài sản góp vốn là căn nhà bao gồm những nội dung nào?",
@@ -9456,7 +9456,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Trường hợp bán hàng quán vỉa hè thì có phải đăng ký kinh doanh không?",
@@ -10645,7 +10645,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Cổ đông công ty cổ phần phải chuyển quyền sở hữu tài sản góp vốn cho công ty theo quy định nào?",
@@ -11641,7 +11641,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Công ty hợp danh có 1 chủ sở hữu có được không?",
@@ -11817,7 +11817,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Chủ sở hữu công ty có quyền và nghĩa vụ gì?",
@@ -12026,7 +12026,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Hồ sơ giải thể công ty cổ phần cần những giấy tờ gì?",
@@ -12820,7 +12820,7 @@
                 "Nghị định 01\/2021\/NĐ-CP"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Hồ sơ đăng ký thành lập công ty TNHH 2 thành viên sản xuất bao bì từ plastic có bắt buộc lập bằng tiếng Việt không?",
@@ -13268,7 +13268,7 @@
                 "Nghị định 01\/2021\/NĐ-CP"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Trong điều lệ công ty có cần phải quy định về vốn điều lệ công ty trách nhiệm hữu hạn?",
@@ -14198,7 +14198,7 @@
                 "Luật Doanh nghiệp 2020"
             ]
         ],
-        "type_question":"reasoning"
+        "type_question":"query"
     },
     {
         "question":"Điều kiện để công ty TNHH 2 thành viên trở lên chia lợi nhuận cho các thành viên là gì?",
