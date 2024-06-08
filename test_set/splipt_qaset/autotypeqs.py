@@ -7,7 +7,7 @@ def classify_question_type(question):
     question = question.lower()
     if any(word in question for word in ['có phải', 'có không', 'không', 'đúng không', 'được không', 'có thể', 'đúng', 'sai', 'nên', 'không nên']):
         return 'verify'
-    elif any(word in question for word in ['như thế nào', 'là gì', 'bao gồm', 'cách', 'khi nào', 'ở đâu', 'ai', 'tại sao', 'thế nào', 'như nào', 'cần gì', 'phải làm sao']):
+    elif any(word in question for word in ['như thế nào', 'là gì', 'bao gồm', 'cách', 'khi nào', 'ở đâu', 'ai', 'tại sao', 'thế nào', 'như nào', 'cần gì', 'phải làm sao', 'trường hợp nào']):
         return 'query'
     else:
         return 'reasoning'
