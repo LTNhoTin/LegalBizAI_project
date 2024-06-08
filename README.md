@@ -37,14 +37,14 @@ Mỗi phần dữ liệu sẽ được chia thành các đoạn nhỏ hơn (chun
 Chúng tôi đã tiến hành thu thập một bộ dữ liệu câu hỏi và trả lời để chuẩn bị cho việc xây dựng bộ testset. Bộ dữ liệu này sẽ giúp chúng tôi đánh giá hiệu quả của hệ thống AI trong việc truy vấn và trả lời câu hỏi.
 ```
 {
-  "question": "Câu hỏi mẫu",
-  "answer": "Câu trả lời mẫu"
+  "question": "Câu hỏi ",
+  "answer": "Câu trả lời "
 }
 ```
 
 ### 4. Phát triển công cụ hỗ trợ
 
-Để dễ dàng gán mã định danh (chunk_ids) cho các file testset, chúng tôi đã phát triển một số công cụ nhỏ. Những công cụ này giúp chúng tôi tự động hoá quá trình gán mã định danh, đảm bảo tính nhất quán và chính xác trong bộ testset.
+Để dễ dàng gán mã định danh (chunk_ids) cho các file testset, chúng tôi đã phát triển một số công cụ nhỏ. Những công cụ này giúp chúng tôi bán tự động hoá quá trình gán mã định danh, đảm bảo tính nhất quán và chính xác trong bộ testset.
 
 ```
 test_set/id_cof/id_cof.py
