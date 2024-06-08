@@ -14,7 +14,7 @@ def classify_question_type(question):
 
 data['type_question'] = data['question'].apply(classify_question_type)
 
-output_path = r"D:\khổ dâm data\bạo dâm data\qaset1.json"
+output_path = r"test_set/combine_qaset/qaset2.json"
 data.to_json(output_path, orient='records', force_ascii=False, indent=4)
 
 print(data.head())
