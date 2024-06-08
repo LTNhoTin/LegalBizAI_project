@@ -1,3 +1,5 @@
 
 /tensorflow-metal
 /venv-metal
+test_set/raw_testset/qaset.json
+test_set/raw_testset/QA_with2refereces.json
