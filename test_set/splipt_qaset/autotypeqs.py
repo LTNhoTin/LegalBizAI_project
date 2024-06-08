@@ -1,6 +1,6 @@
 import pandas as pd
 
-file_path = r"D:\khổ dâm data\bạo dâm data\qaset1.json"
+file_path = r"test_set/splipt_qaset/qaset2.json"
 data = pd.read_json(file_path)
 
 def classify_question_type(question):
