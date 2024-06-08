@@ -2,3 +2,4 @@
 /tensorflow-metal
 /venv-metal
 test_set/combine_qaset/id_cof_private.py
+test_set/combine_qaset
