@@ -3,3 +3,6 @@
 /venv-metal
 test_set/raw_testset/qaset.json
 test_set/raw_testset/QA_with2refereces.json
+test_set/backup
+test_set/id_cof/id_cof_private.py
+
