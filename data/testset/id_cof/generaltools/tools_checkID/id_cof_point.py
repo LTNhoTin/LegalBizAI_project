@@ -4,8 +4,8 @@ from tkinter import messagebox, scrolledtext
 import json
 import pandas as pd
 
-qaset_file = 'test_set/id_cof/chunk_sz_fl_point/qasetfinal.json'
-all_chunk_file = 'test_set/id_cof/chunk_sz_fl_point/all_chunk_final.json'
+qaset_file = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/data/testset/backup/qasetrd.json'
+all_chunk_file = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/data/testset/id_cof/chunk_sz_fl_point/all_chunk_final.json'
 
 with open(qaset_file, 'r', encoding='utf-8') as f:
     df = json.load(f)
@@ -15,7 +15,7 @@ with open(all_chunk_file, 'r', encoding='utf-8') as f:
 
 chunk_range = {
     "Luật Doanh nghiệp 2020": [0, 1759],
-    "Nghị định 01/2021/NĐ-CP": [1800, 2417],
+    "Nghị định 01/2021/NĐ-CP": [1760, 2417],
     "Nghị định 16/2023/NĐ-CP": [2418, 2502],
     "Nghị định 23/2022/NĐ-CP": [2503, 2873],
     "Nghị định 47/2021/NĐ-CP": [2874, 3052],

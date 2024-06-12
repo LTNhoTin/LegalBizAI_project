@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-qaset_file = 'test_set/id_cof/chunkszflmark/qasetfinal.json'
+qaset_file = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/data/testset/backup/qasetrd.json'
 
 with open(qaset_file, 'r', encoding='utf-8') as f:
     df = pd.json_normalize(json.load(f))

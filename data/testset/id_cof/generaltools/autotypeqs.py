@@ -1,6 +1,6 @@
 import pandas as pd
 
-file_path = r"test_set/id_cof/chunk_sz_full_article/qaset_full_article.json"
+file_path = r"/Users/nhotin/Documents/GitHub/LegalBizAI_project/data/testset/backup/qasetrd.json"
 data = pd.read_json(file_path)
 
 def classify_question_type(question):
