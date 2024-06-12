@@ -5,17 +5,17 @@ import httpx
 from motor.motor_asyncio import AsyncIOMotorClient
 from tqdm import tqdm
 
+# Thêm header Authorization nếu cần
 headers = {
     # "Authorization": "SAPISIDHASH 5832935a601c3623cbe544548dcfde01aa5a2949",
-
 }
-client = AsyncIOMotorClient("mongodb://admin:password@localhost:27017/")
 
+# Kết nối tới MongoDB
+client = AsyncIOMotorClient("mongodb://admin:password@localhost:27017/")
 db = client['llm_finetune_db']
 collection = db['finetune_pairs']
 
-
-
+# Hàm hỗ trợ giới hạn số lượng yêu cầu đồng thời
 async def gather_with_concurrency(n, *coros):
     semaphore = asyncio.Semaphore(n)
     async def sem_coro(coro):
@@ -23,115 +23,79 @@ async def gather_with_concurrency(n, *coros):
             return await coro
     return await asyncio.gather(*(sem_coro(c) for c in coros))
 
-
-# def verify_refer_link(link):
-#     valid_link = {
-#          "https://thuvienphapluat.vn/van-ban/Doanh-nghiep/Luat-Doanh-nghiep-so-59-2020-QH14-427301.aspx",
-#          "https://thuvienphapluat.vn/van-ban/Doanh-nghiep/Nghi-dinh-16-2023-ND-CP-to-chuc-quan-ly-doanh-nghiep-truc-tiep-phuc-vu-quoc-phong-an-ninh-564517.aspx",
-#          "https://thuvienphapluat.vn/van-ban/Chung-khoan/Nghi-dinh-08-2023-ND-CP-sua-doi-Nghi-dinh-chao-ban-giao-dich-trai-phieu-doanh-nghiep-rieng-le-557520.aspx",
-#          "https://thuvienphapluat.vn/van-ban/Doanh-nghiep/Nghi-dinh-65-2022-ND-CP-sua-doi-Nghi-dinh-153-2020-ND-CP-chao-ban-giao-dich-trai-phieu-doanh-nghiep-529835.aspx",
-#          "https://thuvienphapluat.vn/van-ban/Doanh-nghiep/Nghi-dinh-23-2022-ND-CP-thanh-lap-doanh-nghiep-do-Nha-nuoc-nam-giu-100-von-dieu-le-509241.aspx",
-#          "https://thuvienphapluat.vn/van-ban/Dau-tu/Nghi-dinh-122-2021-ND-CP-xu-phat-vi-pham-hanh-chinh-linh-vuc-ke-hoach-285024.aspx",
-#          "https://thuvienphapluat.vn/van-ban/Doanh-nghiep/Nghi-dinh-47-2021-ND-CP-huong-dan-Luat-Doanh-nghiep-470561.aspx",
-#          "https://thuvienphapluat.vn/van-ban/Doanh-nghiep/Nghi-dinh-01-2021-ND-CP-dang-ky-doanh-nghiep-283247.aspx",
-#          "https://thuvienphapluat.vn/van-ban/Chung-khoan/Nghi-dinh-153-2020-ND-CP-chao-ban-giao-dich-trai-phieu-doanh-nghiep-tai-thi-truong-trong-nuoc-461187.aspx"
-#     }
-#     main_link = link.split("?")[0]
-#     status = main_link in valid_link
-#     return status    
-
-async def getQues_Ans(site,pbar):
+# Hàm lấy câu hỏi và câu trả lời từ trang web
+async def getQues_Ans(site, pbar):
     try:
         async with httpx.AsyncClient(timeout=None, follow_redirects=True) as QA_site:
             QA_raw = await QA_site.get(site)
-            QA_raw = QA_raw.text
-            valid_tag = {"h2","p","blockquote"}
-            QA_soup = BeautifulSoup(QA_raw,"lxml")
+            QA_soup = BeautifulSoup(QA_raw.text, "lxml")
+
+            valid_tag = {"h2", "p", "blockquote"}
             QA_list = []
             save = False
             flag = False
+            QA = None
             Ques = QA_soup.find("section", class_="news-content", id="news-content")
+
             for descendant in Ques.descendants:
-                if ((tag := descendant.name) in valid_tag):
-                    if (tag == "h2"):
-                        flag = True 
-                        if ((save == True) and QA):
-                            if (QA["answer"].strip() != "") and (QA["base_content"].strip() != ""):
-                                QA["answer"] = QA["answer"] + "Căn cứ vào " + ",".join(QA["references"]) 
-                                QA_list.append(QA)
-                        QA = dict()
+                tag = descendant.name
+                if tag in valid_tag:
+                    if tag == "h2":
+                        flag = True
+                        if save and QA and QA["answer"].strip() and QA["base_content"].strip():
+                            QA["answer"] += " Căn cứ vào " + ", ".join(QA["references"])
+                            QA_list.append(QA)
+                        QA = {
+                            "question": descendant.get_text(strip=True),
+                            "answer": "",
+                            "base_content": "",
+                            "references": [],
+                            "blockquote": ""
+                        }
                         save = True
-                        QA["question"] = descendant.get_text(strip=True)
-                        QA["answer"] = ""
-                        QA["base_content"] = ""
-                        QA["references"] = []
-                        QA["blockqoute"] = ""
-########################
-
-## check xem đối với những câu hỏi query đuổi là gì? nó ko có cái blockquote mà chỉ có tag p chứa refer ở đầu và phần tag p trả lời
-## nó là thông tin trong vb luật, vì là câu query nên nó z thôi, phải xử  lý if cái tag p chứa refer nó có thì sẽ lưu và trả lời và base content đều chung 1 cái
-## để hỉu hơn check lại câu : Mạng lưới tư vấn viên pháp luật là gì? ||  ObjectID trong mongodb :66611b9e696ee7624c8b2778
-
-#########################
-
-                        
                     if not flag:
                         continue
                     if tag == "blockquote":
-                                QA["base_content"] = QA["base_content"] + descendant.text + "\n"
-                                # QA["answer"] = QA["answer"] + descendant.text + "\n"
-                    if (tag == "p") and (descendant.find("img") is None):
+                        QA["base_content"] += descendant.text + "\n"
+                    if tag == "p" and descendant.find("img") is None:
                         next_sibling = descendant.find_next_sibling()
                         prev_sibling = descendant.find_previous_sibling()
                         if (next_sibling and next_sibling.name == "blockquote") or (prev_sibling and prev_sibling.name == "h2"):
                             try:
                                 a_tag = descendant.find("a")
-                                # law_link = a_tag.get("href")  
-                                law_name = a_tag.text   # ten luat
+                                law_name = a_tag.text
                                 ref = descendant.get_text()
-                                try:
-                                    pattern = fr'(?<=tại)\s*(.*?)\s*(?={law_name})'
-                                except:
-                                    pattern = fr'(?<=vào)\s*(.*?)\s*(?={law_name})'
+                                pattern = fr'(?<=tại)\s*(.*?)\s*(?={law_name})' if 'tại' in ref else fr'(?<=vào)\s*(.*?)\s*(?={law_name})'
                                 QA["references"].append(re.findall(pattern, ref)[0] + " " + law_name)
                             except:
-                                    save = False
-                                    continue
-                            # if not verify_refer_link(law_link):
-                            #     save = False
-                            #     continue
-
-                            QA["base_content"] = QA["base_content"] + ref + "\n"
-                        
-                        elif (descendant.em is None):
-                            QA["answer"] = QA["answer"] + descendant.get_text() + "\n"
-
-            if (QA  and (save == True)):
+                                save = False
+                                continue
+                            QA["base_content"] += ref + "\n"
+                        elif descendant.em is None:
+                            QA["answer"] += descendant.get_text() + "\n"
+            
+            if QA and save:
                 QA_list.append(QA)
-
+            
             if QA_list:
                 await collection.insert_many(QA_list)
             pbar.update(1)
     except Exception as e:
         print(e)
         with open("data_processing/data4llm/error.txt", "a") as ferror:
-            ferror.write(site + "\n")       
-async def getQA(links):
-    
-    with tqdm(total=len(links)) as pbar:
-        await gather_with_concurrency(100,*(getQues_Ans(link, pbar) for link in links))
-        
+            ferror.write(site + "\n")
 
-# async def getQA(links):
-#     await gather_with_concurrency(100,*(getQues_Ans(link) for link in links))
-                
-            
+# Hàm gọi hàm getQues_Ans với danh sách các liên kết
+async def getQA(links):
+    with tqdm(total=len(links)) as pbar:
+        await gather_with_concurrency(100, *(getQues_Ans(link, pbar) for link in links))
+
+# Đọc danh sách các liên kết từ file
 with open("data_processing/data4llm/example copy.txt", "r") as file:
     links = file.read().split("\n")
 
+# Chạy chương trình
 asyncio.run(getQA(links[:20]))
 
+# Đóng kết nối MongoDB
 client.close()
-
-
-#57060

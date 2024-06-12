@@ -1,7 +1,5 @@
 
 /tensorflow-metal
 /venv-metal
-test_set/raw_testset/qaset.json
-test_set/raw_testset/QA_with2refereces.json
-test_set/backup
-data/testset/id_cof/chunk_sz_fl_point/questions.json
+data/testset/backup
+data/testset/id_cof

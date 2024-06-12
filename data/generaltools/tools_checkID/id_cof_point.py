@@ -4,7 +4,7 @@ from tkinter import messagebox, scrolledtext
 import json
 import pandas as pd
 
-qaset_file = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/data/testset/backup/qasetrd.json'
+qaset_file = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/data/testset/id_cof/chunk_sz_fl_point/quaset_final.json'
 all_chunk_file = '/Users/nhotin/Documents/GitHub/LegalBizAI_project/data/testset/id_cof/chunk_sz_fl_point/all_chunk_final.json'
 
 with open(qaset_file, 'r', encoding='utf-8') as f:
