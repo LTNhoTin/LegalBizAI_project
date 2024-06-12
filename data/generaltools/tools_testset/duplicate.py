@@ -1,7 +1,7 @@
 import json
 
 # Đọc dữ liệu từ file JSON
-with open('data/testset/backup/qaset.json', 'r', encoding='utf-8') as file:
+with open('/Users/nhotin/Documents/GitHub/LegalBizAI_project/data/documents/raw_testset/QA.thuvienphapluat.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 # Sử dụng set để lưu trữ các câu hỏi đã gặp
@@ -19,7 +19,7 @@ for item in data:
 remaining_questions_count = len(filtered_data)
 
 # Ghi dữ liệu đã lọc vào file JSON mới
-with open('data/testset/backup/qasetrd.json', 'w', encoding='utf-8') as file:
+with open('data/testset/backup/qaset_rd.json', 'w', encoding='utf-8') as file:
     json.dump(filtered_data, file, ensure_ascii=False, indent=4)
 
 print(f"Đã lọc và lưu các câu hỏi duy nhất vào file 'filtered_file.json'. Số câu hỏi còn lại: {remaining_questions_count}")

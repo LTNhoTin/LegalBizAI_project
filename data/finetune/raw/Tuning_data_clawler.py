@@ -11,8 +11,8 @@ headers = {
 }
 client = AsyncIOMotorClient("mongodb://admin:password@localhost:27017/")
 
-db = client['nhotin']
-collection = db['llm']
+db = client['llm_finetune_db']
+collection = db['finetune_pairs']
 
 
 
