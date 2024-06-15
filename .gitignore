@@ -3,3 +3,11 @@
 /venv-metal
 data/testset/backup
 data/testset/id_cof
+data/testset/qas_dataset/article
+data/testset/qas_dataset/clause
+data/testset/qas_dataset/point
+data/testset/id_cof
+data/generaltools/tools_checkID/new/id_cof_fl_point.py
+data/generaltools/tools_checkID/new/id_cof_fl_article.py
+data/generaltools/tools_checkID/new/id_cof_clause.py
+data/generaltools/tools_checkID/old
