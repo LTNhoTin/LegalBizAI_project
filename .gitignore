@@ -11,3 +11,4 @@ data/generaltools/tools_checkID/new/id_cof_fl_point.py
 data/generaltools/tools_checkID/new/id_cof_fl_article.py
 data/generaltools/tools_checkID/new/id_cof_clause.py
 data/generaltools/tools_checkID/old
+data/finetune/raw/llm_finetune_db.finetune_pairs_v2.json
