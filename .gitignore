@@ -1,17 +1,27 @@
+# Ignore TensorFlow Metal files
 /tensorflow-metal
 /venv-metal
+
+# Ignore test set data and backup
 data/testset/backup
 data/testset/id_cof
 data/testset/qas_dataset/article
 data/testset/qas_dataset/clause
 data/testset/qas_dataset/point
+
+# Ignore ID Cof files
 data/testset/id_cof
+
+# Ignore  tools_checkID
+data/generaltools/tools_checkID/old
 data/generaltools/tools_checkID/new/id_cof_fl_point.py
 data/generaltools/tools_checkID/new/id_cof_fl_article.py
 data/generaltools/tools_checkID/new/id_cof_clause.py
-data/generaltools/tools_checkID/old
+
+# Ignore finetune raw data
 data/finetune/raw/llm_finetune_db.finetune_pairs_v2.json
-data/testset/qas_dataset/article
-data/testset/qas_dataset/point
-data/testset/id_cof
 data/finetune/raw/finetuneda.json
+
+# Ignore duplicated paths (if any)
+/data/testset/qas_dataset/article
+/data/testset/qas_dataset/point
