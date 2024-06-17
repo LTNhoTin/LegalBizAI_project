@@ -7,6 +7,8 @@ data/testset/id_cof
 data/testset/qas_dataset/article
 data/testset/qas_dataset/clause
 data/testset/qas_dataset/point
+data/testset/qas_dataset/point
+
 # Ignore  tools_checkID
 data/generaltools/tools_checkID/old
 data/generaltools/tools_checkID/new/id_cof_fl_point.py
