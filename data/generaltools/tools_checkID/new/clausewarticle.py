@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox, scrolledtext
 import json
 import pandas as pd
-
+ 
 qaset_file = 'data/testset/qas_dataset/mix /qaset_article.json'
 all_chunk_file = 'data/testset/qas_dataset/mix /all_chunks_by_clauseWarticle.json'
 
@@ -209,5 +209,4 @@ back_button = tk.Button(button_frame, text="Quay lại câu hỏi trước", com
 back_button.pack(side=tk.LEFT, padx=5)
 
 next_question()
-
 root.mainloop()

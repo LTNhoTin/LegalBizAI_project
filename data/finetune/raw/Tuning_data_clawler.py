@@ -32,54 +32,31 @@ async def get_ques_ans(site, session, executor):
             html = await response.text()
             soup = await loop.run_in_executor(executor, BeautifulSoup, html, "lxml")
 
-            valid_tag = {"h2", "p", "a"}
             qa_list = []
-            save = False
-            flag = False
-            qa = None
             ques = soup.find("section", class_="news-content", id="news-content")
 
-            for descendant in ques.descendants:
-                tag = descendant.name
-                if tag in valid_tag:
-                    if tag == "h2":
-                        flag = True
-                        if save and qa and qa["answer"].strip() and qa["base_content"].strip():
-                            qa["answer"] += " Căn cứ vào " + ", ".join(qa["references"])
-                            qa_list.append(qa)
-                        qa = {
-                            "request_link": site,  # Thêm đường dẫn liên kết vào đây
-                            "question": descendant.get_text(strip=True),
-                            "answer": "",
-                            "base_content": "",
-                            "references": []
-                        }
-                        save = True
-                    if not flag:
-                        continue
-                    if tag == "a":
-                        qa["references"].append(descendant.get("href"))
-                    if tag == "p" and descendant.find("img") is None:
-                        next_sibling = descendant.find_next_sibling()
-                        prev_sibling = descendant.find_previous_sibling()
-                        if (next_sibling and next_sibling.name == "blockquote") or (prev_sibling and prev_sibling.name == "h2"):
-                            try:
-                                a_tag = descendant.find("a")
-                                law_name = a_tag.text
-                                ref = descendant.get_text()
-                                pattern = fr'(?<=tại)\s*(.*?)\s*(?={law_name})' if 'tại' in ref else fr'(?<=vào)\s*(.*?)\s*(?={law_name})'
-                                qa["references"].append(re.findall(pattern, ref)[0] + " " + law_name)
-                            except:
-                                save = False
-                                continue
-                            qa["base_content"] += ref + "\n"
-                        elif descendant.em is None:
-                            qa["answer"] += descendant.get_text() + "\n"
-                    elif tag == "p" and qa is not None:
-                        qa["base_content"] += descendant.get_text() + "\n"
+            for h2_tag in ques.find_all("h2"):
+                question = h2_tag.get_text(strip=True)
+                answer = ""
+                references = []
 
-            if qa and save:
-                qa_list.append(qa)
+                # Lấy các đoạn văn bản trong tag p sau tag h2 hiện tại
+                for p_tag in h2_tag.find_next_siblings("p"):
+                    if p_tag.find("img") is None:
+                        answer += p_tag.get_text() + "\n"
+                    a_tags = p_tag.find_all("a")
+                    for a_tag in a_tags:
+                        references.append(a_tag.get("href"))
+
+                qa = {
+                    "question": question,
+                    "answer": answer.strip(),
+                    "references": references,
+                    "request_link": site
+                }
+
+                if qa["answer"]:
+                    qa_list.append(qa)
 
             if qa_list:
                 await collection.insert_many(qa_list)
@@ -87,7 +64,7 @@ async def get_ques_ans(site, session, executor):
         print(f"Error occurred for {site}: {e}")
         with open(ERROR_FILE_PATH, "a") as error_file:
             error_file.write(f"{site}\n")
-
+            
 # Hàm gọi hàm get_ques_ans với danh sách các liên kết
 async def get_qa(links):
     async with aiohttp.ClientSession() as session:
