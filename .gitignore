@@ -11,5 +11,4 @@ data/generaltools/tools_checkID/new/id_cof_fl_article.py
 data/generaltools/tools_checkID/new/id_cof_clause.py
 # Ignore finetune raw data
 
-
 .DS_Store
