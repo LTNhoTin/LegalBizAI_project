@@ -12,3 +12,5 @@ data/generaltools/tools_checkID/new/id_cof_clause.py
 # Ignore finetune raw data
 data/finetune/raw/llm_finetune_db.finetune_pairs_v2.json
 data/finetune/processed/finetuneda.json
+
+.DS_Store
