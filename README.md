@@ -51,14 +51,15 @@ Chúng tôi đã tiến hành thu thập một bộ dữ liệu câu hỏi và t
 
 ```
 ## General Tools
-tools_checkID/new
-  └── clausewarticle.py
-## Test Set Tools
-autotypeqs.py
-deleterange.py
-duplicate.py
-keepqs.py
-typeqs.ipynb
+generaltools
+  ├── tools_checkID/new
+  │   └── clausewarticle.py
+  └── tools_testset
+      ├── autotypeqs.py
+      ├── deleterange.py
+      ├── duplicate.py
+      ├── keepqs.py
+      └── typeqs.ipynb
 
 ```
 
