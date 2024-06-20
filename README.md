@@ -38,7 +38,10 @@ Chúng tôi đã tiến hành thu thập một bộ dữ liệu câu hỏi và t
 ```
 {
   "question": "Câu hỏi ",
-  "answer": "Câu trả lời "
+  "answer": "Câu trả lời ",
+  "type_question": "Phân loại câu hỏi ",
+  "chunk_ids": "Gán chunk theo id tương ứng "
+
 }
 ```
 
@@ -47,10 +50,15 @@ Chúng tôi đã tiến hành thu thập một bộ dữ liệu câu hỏi và t
 Để dễ dàng gán mã định danh (chunk_ids) cho các file testset, chúng tôi đã phát triển một số công cụ nhỏ. Những công cụ này giúp chúng tôi bán tự động hoá quá trình gán mã định danh, đảm bảo tính nhất quán và chính xác trong bộ testset.
 
 ```
-test_set/id_cof/id_cof.py
-test_set/splipt_qaset/autotypeqs.py
-test_set/splipt_qaset/split_qaset.py
-test_set/combine_qaset/idmark.py
+## General Tools
+tools_checkID/new
+  └── clausewarticle.py
+## Test Set Tools
+autotypeqs.py
+deleterange.py
+duplicate.py
+keepqs.py
+typeqs.ipynb
 
 ```
 
