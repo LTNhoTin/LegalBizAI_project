@@ -63,6 +63,19 @@ generaltools
 
 ```
 
+### 5. Cào và Xử lý Dữ liệu Thực tế
 
-Dự án LegalBizAI đang tiến triển tốt, với các bước cơ bản đã được thực hiện và dữ liệu cơ bản đã được thu thập và phân chia hợp lý. Chúng tôi sẽ tiếp tục hoàn thiện các công cụ hỗ trợ và bắt đầu xây dựng hệ thống AI truy vấn và trả lời câu hỏi trong thời gian sớm nhất.
+* **Nguồn:** 36,000 liên kết câu hỏi từ Thư viện Pháp luật.
+* **Kết quả:** Hơn 120,000 câu hỏi và câu trả lời (sau xử lý còn 105,000).
 
+### 6. Fine-tuning Mô hình
+
+* **Mô hình:** Vistral 7B
+* **Mục tiêu:** Cải thiện khả năng truy vấn và trả lời của hệ thống.
+
+## Công việc Tương lai
+
+* Hoàn thiện mô hình Retrieval-Augmented Generation (RAG).
+* Tiếp tục fine-tune mô hình Vistral 7B.
+* Phát triển giao diện người dùng thân thiện.
+* Triển khai hệ thống trên môi trường thực tế.
