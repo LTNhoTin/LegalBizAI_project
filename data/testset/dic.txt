@@ -1,0 +1,15 @@
+chunk_range = {
+    'Chương I: Những quy định chung': (0, 96),
+    'Chương II: Thành lập doanh nghiệp': (97, 205),
+    'Chương III: Công ty trách nhiệm hữu hạn': {
+        'Mục 1: Công ty trách nhiệm hữu hạn hai thành viên trở lên': (206, 311),
+        'Mục 2: Công ty trách nhiệm hữu hạn một thành viên': (312, 372)
+    },
+    'Chương IV: Doanh nghiệp nhà nước': (373, 473),
+    'Chương V: Công ty cổ phần': (474, 710),
+    'Chương VI: Công ty hợp danh': (711, 789),
+    'Chương VII: Doanh nghiệp tư nhân': (790, 809),
+    'Chương VIII: Nhóm công ty': (810, 827),
+    'Chương IX: Tổ chức lại, giải thể và phá sản doanh nghiệp': (828, 892),
+    'Chương X: Điều khoản thi hành': (893, 906)
+}

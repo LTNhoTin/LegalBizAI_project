@@ -13,13 +13,13 @@ with open(qaset_file, 'r', encoding='utf-8') as f:
 with open(all_chunk_file, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
-chunk_range = {'Luật Doanh Nghiệp 2020': (0, 904),
- 'Nghị định 16/2023/NĐ-CP': (905, 951),
- 'Nghị định 23/2022/NĐ-CP': (952, 1126),
- 'Nghị định 122/2021/NĐ-CP': (1127, 1367),
- 'Nghị định 47/2021/NĐ-CP': (1368, 1480),
- 'Nghị định 01/2021/NĐ-CP': (1481, 1876),
- 'Nghị định 153/2020/NĐ-CP': (1877, 2039)}
+chunk_range = {'Luật Doanh Nghiệp 2020': (0, 906),
+ 'Nghị định 16/2023/NĐ-CP': (907, 953),
+ 'Nghị định 23/2022/NĐ-CP': (954, 1128),
+ 'Nghị định 122/2021/NĐ-CP': (1129, 1369),
+ 'Nghị định 47/2021/NĐ-CP': (1370, 1482),
+ 'Nghị định 01/2021/NĐ-CP': (1483, 1878),
+ 'Nghị định 153/2020/NĐ-CP': (1879, 2041)}
 
 df = pd.json_normalize(df)
 item = df.columns
