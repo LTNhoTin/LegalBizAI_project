@@ -1,2 +1,0 @@
-data/finetune/processed/finetuneda.json filter=lfs diff=lfs merge=lfs -text
-data/finetune/raw/llm_finetune_db.finetune_pairs_v2.json filter=lfs diff=lfs merge=lfs -text

@@ -5,10 +5,13 @@ data/testset/qas_dataset/article
 data/testset/qas_dataset/clause
 data/testset/qas_dataset/point
 # Ignore  tools_checkID
-data/generaltools/tools_checkID/old
-data/generaltools/tools_checkID/new/id_cof_fl_point.py
-data/generaltools/tools_checkID/new/id_cof_fl_article.py
-data/generaltools/tools_checkID/new/id_cof_clause.py
+src/generaltools/tools_checkID/old
+src/generaltools/tools_checkID/new/id_cof_fl_point.py
+src/generaltools/tools_checkID/new/id_cof_fl_article.py
+src/generaltools/tools_checkID/new/id_cof_clause.py
 # Ignore finetune raw data
 
 .DS_Store
+**/node_modules/
+data/finetune/raw/old/finetune_data_no_base_no_taive.json
+data/finetune/processed
