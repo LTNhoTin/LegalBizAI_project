@@ -1,0 +1,6 @@
+Điều 29. Mã số doanh nghiệp
+
+1. Mã số doanh nghiệp là dãy số được tạo bởi Hệ thống thông tin quốc gia về đăng ký doanh nghiệp, được cấp cho doanh nghiệp khi thành lập và được ghi trên Giấy chứng nhận đăng ký doanh nghiệp. Mỗi doanh nghiệp có một mã số duy nhất và không được sử dụng lại để cấp cho doanh nghiệp khác.
+
+2. Mã số doanh nghiệp được dùng để thực hiện nghĩa vụ về thuế, thủ tục hành chính và quyền, nghĩa vụ khác.
+

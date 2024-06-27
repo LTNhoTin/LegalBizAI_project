@@ -1,19 +1,14 @@
 # Data Exclusions 
-data/testset/backup
-data/testset/id_cof
-data/testset/qas_dataset/article
-data/testset/qas_dataset/clause
-data/testset/qas_dataset/point
-
+data/raw/testset/backup
 # Tool Exclusions
-src/generaltools/tools_checkID/old
-src/generaltools/tools_checkID/new/id_cof_fl_point.py
-src/generaltools/tools_checkID/new/id_cof_fl_article.py
-src/generaltools/tools_checkID/new/id_cof_clause.py
+data/src/generaltools/tools_checkID/old
+data/src/generaltools/tools_checkID/new/id_cof_fl_point.py
+data/src/generaltools/tools_checkID/new/id_cof_fl_article.py
+data/src/generaltools/tools_checkID/new/id_cof_clause.py
 
 # System and Build Files
 .DS_Store
 **/node_modules/
 # Fine-tuning Data
-data/finetune/raw/old/finetune_data_no_base_no_taive.json
-data/finetune/processed
+data/processed/finetune/fine_tune_data.error_data.json
+data/processed/finetune/fine_tune_data.training_data.json
