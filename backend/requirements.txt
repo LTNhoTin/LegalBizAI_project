@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+httpx
+orjson
+faiss-cpu
+numpy
+pandas
+langchain
+langchain-community
+sentence-transformers

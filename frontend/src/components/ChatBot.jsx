@@ -68,11 +68,12 @@ function ChatBot(props) {
       setChatHistory((prev) => [promptInput, ...prev]);
 
       try {
-        const response = await fetch(`https://toad-vast-civet.ngrok-free.app/rag/${model}?q=${promptInput}`, {
-          method: "get",
-          headers: new Headers({
-            "ngrok-skip-browser-warning": "69420",
-          }),
+        const response = await fetch(`http://localhost:8000/stream`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: promptInput, model })
         });
         const result = await response.json();
         setDataChat((prev) => [
