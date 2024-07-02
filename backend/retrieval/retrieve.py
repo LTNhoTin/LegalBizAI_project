@@ -207,7 +207,7 @@ def load_chunks(file_path):
         return json.load(file)
 
 
-chunks = load_chunks(relative_path(r"../data/all_chunks_by_clauseWarticle.json"))
+chunks = load_chunks(relative_path(r"backend/data/all_chunks_by_clauseWarticle.json"))
 
 
 def get_question_embedding(question):

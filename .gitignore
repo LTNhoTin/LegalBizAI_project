@@ -1,5 +1,5 @@
 # Data Exclusions 
-data/raw/testset/backup
+data/raw
 # Tool Exclusions
 data/src/generaltools/tools_checkID/old
 data/src/generaltools/tools_checkID/new/id_cof_fl_point.py
@@ -9,6 +9,3 @@ data/src/generaltools/tools_checkID/new/id_cof_clause.py
 # System and Build Files
 .DS_Store
 **/node_modules/
-# Fine-tuning Data
-data/processed/finetune/fine_tune_data.error_data.json
-data/processed/finetune/fine_tune_data.training_data.json

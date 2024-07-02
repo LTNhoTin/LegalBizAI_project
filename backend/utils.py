@@ -12,7 +12,7 @@ class ChunkLoader:
         return self._data[key]
 
 
-chunk_data = ChunkLoader(relative_path(r"data/all_chunks_by_clauseWarticle.json"))
+chunk_data = ChunkLoader(relative_path(r"backend/data/all_chunks_by_clauseWarticle.json"))
 
 
 def split_consecutive_groups(lst, chunk_data):
