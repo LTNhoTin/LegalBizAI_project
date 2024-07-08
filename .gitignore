@@ -1,5 +1,6 @@
 # Data Exclusions 
 data/raw
+finetune
 # Tool Exclusions
 data/src/generaltools/tools_checkID/old
 data/src/generaltools/tools_checkID/new/id_cof_fl_point.py

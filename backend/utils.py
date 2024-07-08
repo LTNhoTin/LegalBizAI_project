@@ -1,5 +1,5 @@
 import orjson
-from retrieval.retrieve import retrieve
+from app.backend.retrieval.retrieve import retrieve
 from configs.paths import relative_path
 
 
@@ -12,10 +12,11 @@ class ChunkLoader:
         return self._data[key]
 
 
-chunk_data = ChunkLoader(relative_path(r"backend/data/all_chunks_by_clauseWarticle.json"))
+chunk_data = ChunkLoader(relative_path(r"app\backend\data\all_chunks_by_clauseWarticle.json"))
 
 
 def split_consecutive_groups(lst, chunk_data):
+
     groups = []
     current_group = []
 
@@ -77,7 +78,7 @@ def get_law_content(chunks: list[dict], chunk_ids: list[int]) -> str:
     return "\n-----\n".join(contents)
 
 
-with open(relative_path(r"data/prompt_template.txt"), "r", encoding="utf-8") as f_template:
+with open(relative_path(r"app\backend\prompt_template.txt"), "r", encoding="utf-8") as f_template:
     PROMPT_TEMPLATE = f_template.read()
 
 
@@ -90,3 +91,13 @@ def get_prompt(question: str):
         law_content=law_content,
     )
     return prompt
+
+
+# print(get_law_content(chunk_data._data, [1093, 1094, 1095, 1096, 1097]))
+
+
+print(
+    get_prompt(
+        "Phòng Đăng ký kinh doanh phải chuyển tình trạng pháp lý của doanh nghiệp tư nhân trong Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp sang tình trạng đang làm thủ tục giải thể khi nào?"
+    )
+)

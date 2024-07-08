@@ -7,7 +7,9 @@ import numpy as np
 import pandas as pd
 
 from configs.paths import relative_path
-from langchain_community.vectorstores import FAISS
+from langchain.vectorstores import FAISS
+
+# from tqdm import tqdm
 from underthesea import word_tokenize
 
 bizlaw_short_dict = {
@@ -37,7 +39,6 @@ bizlaw_short_dict = {
     "ĐHĐCĐ": "Đại hội đồng cổ đông",
     "ĐKKD": "Đăng ký kinh doanh",
 }
-
 stop_words_vn = set(
     [
         "và",
@@ -176,7 +177,8 @@ stop_words_vn = set(
     ]
 )
 
-index_path = relative_path(r"../data/faiss_index")
+index_path = relative_path(r"app\backend\data\faiss_index")
+
 faiss_index = faiss.read_index(index_path)
 
 
@@ -207,7 +209,7 @@ def load_chunks(file_path):
         return json.load(file)
 
 
-chunks = load_chunks(relative_path(r"backend/data/all_chunks_by_clauseWarticle.json"))
+chunks = load_chunks(relative_path(r"app\backend\data\all_chunks_by_clauseWarticle.json"))
 
 
 def get_question_embedding(question):
