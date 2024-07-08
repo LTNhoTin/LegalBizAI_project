@@ -1,0 +1,8 @@
+fastapi
+httpx
+orjson
+faiss-cpu
+numpy
+pandas
+langchain
+underthesea

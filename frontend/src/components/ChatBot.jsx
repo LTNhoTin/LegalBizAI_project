@@ -67,12 +67,12 @@ function ChatBot(props) {
       setIsLoad(true);
       setDataChat((prev) => [...prev, ["end", [promptInput, model]]]);
       setChatHistory((prev) => [promptInput, ...prev]);
-
+  
       try {
-        const result = await sendMessageChatService(promptInput, model);
+        const result = await sendMessageChatService(promptInput);
         setDataChat((prev) => [
           ...prev,
-          ["start", [result.answer, result.source_documents, model]],
+          ["start", [`Câu hỏi: ${result.question}\n\n${result.answer}`, null, model]], // Hiển thị câu hỏi và câu trả lời từ backend
         ]);
       } catch (error) {
         setDataChat((prev) => [
@@ -86,7 +86,7 @@ function ChatBot(props) {
       }
     }
   };
-
+  
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       sendMessageChat();
@@ -281,7 +281,7 @@ function ChatBot(props) {
                   aria-label="Loading Spinner"
                   data-testid="loader"
                 />
-                <p className="text-xs font-medium">{timeOfRequest + "/30s"}</p>
+                <p className="text-xs font-medium">{timeOfRequest + "/5s"}</p>
               </div>
             </div>
           )}

@@ -7,8 +7,7 @@ import numpy as np
 import pandas as pd
 
 # from configs.paths import relative_path
-from langchain.vectorstores import FAISS
-
+from langchain_community.vectorstores import FAISS
 # from tqdm import tqdm
 from underthesea import word_tokenize
 
@@ -177,7 +176,7 @@ stop_words_vn = set(
     ]
 )
 
-index_path = "/home/alex/FPT/DPL302m/project/LawBizAI/backend/data/faiss_index"
+index_path = "data/faiss_index"
 
 faiss_index = faiss.read_index(index_path)
 
@@ -197,8 +196,7 @@ def tokenizer(text):
 from sentence_transformers import SentenceTransformer
 
 # Load the model from the local directory
-model = SentenceTransformer("/home/alex/FPT/DPL302m/project/LawBizAI/models/embedding")
-
+model = SentenceTransformer("models/embedding")
 
 def get_embedding(text):
     return model.encode(text)
@@ -209,7 +207,7 @@ def load_chunks(file_path):
         return json.load(file)
 
 
-chunks = load_chunks("/home/alex/FPT/DPL302m/project/LawBizAI/backend/data/all_chunks_by_clauseWarticle.json")
+chunks = load_chunks("data/all_chunks_by_clauseWarticle.json")
 
 
 def get_question_embedding(question):

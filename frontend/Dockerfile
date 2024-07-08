@@ -1,20 +1,23 @@
-# Sử dụng Node.js image chính thức từ Docker Hub
+# Sử dụng một phiên bản Node.js cụ thể thay vì 'latest'
 FROM node:18-alpine
 
 # Thiết lập thư mục làm việc
 WORKDIR /app
 
-# Sao chép file package.json và package-lock.json vào container
+# Sao chép package.json và package-lock.json (nếu có)
 COPY package*.json ./
 
-# Cài đặt các dependencies
+# Cài đặt dependencies
 RUN npm install
 
-# Sao chép tất cả các file từ máy chủ vào container
+# Sao chép toàn bộ source code vào thư mục làm việc
 COPY . .
 
-# Expose port 5173
+# Tăng giới hạn bộ nhớ cho Node.js
+ENV NODE_OPTIONS=--max-old-space-size=4096
+
+# Mở cổng 5173
 EXPOSE 5173
 
-# Chạy ứng dụng trong chế độ development với host được mở
-CMD ["npm", "run", "dev"]
+# Chạy ứng dụng
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
