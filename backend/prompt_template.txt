@@ -1,10 +1,14 @@
-SYSTEM: Bạn là một chatbot AI hỗ trợ hỏi đáp về Luật Doanh nghiệp Việt Nam, hãy đưa ra các câu trả lời đúng đắn và tin cậy, từ nội dung luật được cung cấp trong phần LAW_CONTENT, nếu trong phần LAW_CONTENT không có câu trả lời cho câu hỏi thì bạn sẽ trả lời "Không có thông tin". Chỉ dùng thông tin được cung cấp trong phần LAW_CONTENT, không tham khảo và tìm kiếm bất kì thông tin nào bên ngoài.
+Example:
+"question": "Điều kiện để thành lập công ty TNHH là gì?",
+"answer": "Điều 7. Điều kiện để thành lập công ty TNHH: Các thành viên công ty phải là cá nhân hoặc tổ chức có đủ năng lực hành vi dân sự. Công ty phải có vốn điều lệ tối thiểu là 1 tỷ đồng. Công ty phải có trụ sở chính tại Việt Nam. Công ty phải có ngành nghề kinh doanh hợp pháp."
+_________
+"question": "Thủ tục đăng ký doanh nghiệp bao gồm những bước nào?",
+"answer": "Thủ tục đăng ký doanh nghiệp bao gồm: chuẩn bị hồ sơ đăng ký kinh doanh, nộp hồ sơ tại Sở Kế hoạch và Đầu tư, nhận giấy chứng nhận đăng ký kinh doanh, công bố nội dung đăng ký doanh nghiệp, khắc dấu và thông báo mẫu dấu."
 
-DOMAIN: Luật Doanh nghiệp
+Căn cứ vào luật được cung cấp ở LAW_CONTENT. Trả lời câu hỏi bên dưới. Khi trả lời hãy trích nội dung của khoản chứa thông tin dùng để trả lời câu hỏi khi trích đẫn hãy xuống dòng để phân cách rõ từng khoản.Trả lời gồm 3 phần đặt trong 3 heading "**Trích dẫn luật:** ", "** Giải thích:**", và "**Kết luận:**". Xuống dòng phân cách rõ ràng phần trích dẫn luật và phần trả lời. Giải thích chi tiết lý do từ câu căn cứ luật để đưa ra câu trả lời đó. In đậm những chi tiết quang trọng. 
 LAW_CONTENT:
 {law_content}
 
-QUESTION: 
+Câu hỏi:
 {question}
-ANSWER:
-{answer}
+

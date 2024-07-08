@@ -1,6 +1,6 @@
 import orjson
-from app.backend.retrieval.retrieve import retrieve
-from configs.paths import relative_path
+from retrieval.retrieve import retrieve
+# from configs.paths import relative_path
 
 
 class ChunkLoader:
@@ -12,7 +12,7 @@ class ChunkLoader:
         return self._data[key]
 
 
-chunk_data = ChunkLoader(relative_path(r"app\backend\data\all_chunks_by_clauseWarticle.json"))
+chunk_data = ChunkLoader("/home/alex/FPT/DPL302m/project/LawBizAI/backend/data/all_chunks_by_clauseWarticle.json")
 
 
 def split_consecutive_groups(lst, chunk_data):
@@ -78,7 +78,7 @@ def get_law_content(chunks: list[dict], chunk_ids: list[int]) -> str:
     return "\n-----\n".join(contents)
 
 
-with open(relative_path(r"app\backend\prompt_template.txt"), "r", encoding="utf-8") as f_template:
+with open("./prompt_template.txt", "r", encoding="utf-8") as f_template:
     PROMPT_TEMPLATE = f_template.read()
 
 
