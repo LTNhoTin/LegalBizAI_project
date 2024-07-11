@@ -5,4 +5,7 @@ faiss-cpu
 numpy
 pandas
 langchain
+langchain-core
+langchain-community
 underthesea
+sentence_transformers

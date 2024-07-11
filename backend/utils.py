@@ -1,6 +1,6 @@
 import orjson
 from retrieval.retrieve import retrieve
-# from configs.paths import relative_path
+from constants import PATHS
 
 
 class ChunkLoader:
@@ -8,11 +8,8 @@ class ChunkLoader:
         with open(chunk_path, "rb") as f_data:
             self._data = orjson.loads(f_data.read())
 
-    def __getitem__(self, key):
-        return self._data[key]
 
-
-chunk_data = ChunkLoader("data/all_chunks_by_clauseWarticle.json")
+chunk_data = ChunkLoader(PATHS["CHUNK"])
 
 
 def split_consecutive_groups(lst, chunk_data):
@@ -78,7 +75,7 @@ def get_law_content(chunks: list[dict], chunk_ids: list[int]) -> str:
     return "\n-----\n".join(contents)
 
 
-with open("./prompt_template.txt", "r", encoding="utf-8") as f_template:
+with open(PATHS["PROMPT_TEMPLATE"], "r", encoding="utf-8") as f_template:
     PROMPT_TEMPLATE = f_template.read()
 
 
@@ -98,6 +95,6 @@ def get_prompt(question: str):
 
 print(
     get_prompt(
-        "Phòng Đăng ký kinh doanh phải chuyển tình trạng pháp lý của doanh nghiệp tư nhân trong Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp sang tình trạng đang làm thủ tục giải thể khi nào?"
+        "Hội đồng giải thể doanh nghiệp do Nhà nước nắm giữ 100% vốn điều lệ có được quyền sử dụng con dấu của doanh nghiệp hay không?"
     )
 )

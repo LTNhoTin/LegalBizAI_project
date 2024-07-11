@@ -1,16 +1,15 @@
-import json
-
-import httpx
 from fastapi.middleware.cors import CORSMiddleware
 from utils import get_prompt
 from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
+from generation import gemini
+
+# import models.gemini as gemini
+# import models.vistral7b as vistral7b
 
 app = FastAPI()
 
-origins = [
-    "*"
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,36 +18,32 @@ app.add_middleware(
     allow_methods=["*"],  # Allow all methods
     allow_headers=["*"],  # Allow all headers
 )
-API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBrsEuLPKV0zkGW3GLIbxupb2ANGOdg7sg'
+API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBrsEuLPKV0zkGW3GLIbxupb2ANGOdg7sg"
 
 
+llm_call = {
+    "gemini": gemini.generate_response,
+    # "vistral-7b-chat": vistral7b.generate_response,
+}
 
-async def stream_gemini_api(prompt):
-    payload = json.dumps({"contents": [{"parts": [{"text": prompt}]}]})
-    headers = {"Content-Type": "application/json"}
-
-    async with httpx.AsyncClient(timeout=None) as client:
-        res = await client.post(API_URL, headers=headers, data=payload)
-        res = res.json()
-        text = res["candidates"][0]["content"]["parts"][0]["text"]
-        return {"result":text,
-                "source_documents":None}
-            # async for chunk in response.aiter_bytes():
-            #     yield chunk
+DEFAULT_MODEL = "gemini"
 
 
 @app.post("/stream")
 async def stream_response(request: Request):
     body = await request.json()
     message = body.get("message", "")
-    prompt = get_prompt(message)
+    model = body.get("model", DEFAULT_MODEL)
+    prompt = get_prompt(message)  # add returning reference to the prompt
     print(prompt)
 
     if not prompt:
         return {"error": "Prompt is required"}
     # return StreamingResponse(stream_gemini_api(prompt), media_type="application/json")
-    data = await stream_gemini_api(prompt)
-    return data
+    data = await llm_call[model](prompt)
+    resp = {"answer": data, "source_documents": None}
+    return resp
+
 
 if __name__ == "__main__":
     import uvicorn

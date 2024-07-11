@@ -11,3 +11,8 @@ data/src/generaltools/tools_checkID/new/id_cof_clause.py
 # System and Build Files
 .DS_Store
 **/node_modules/
+
+# Ignore Python compiled files
+*.pyc
+__pycache__/
+

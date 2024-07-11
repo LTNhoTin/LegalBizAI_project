@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import unicodedata as ud
 
@@ -6,10 +7,12 @@ import faiss
 import numpy as np
 import pandas as pd
 
-# from configs.paths import relative_path
-from langchain_community.vectorstores import FAISS
+# from langchain_community.vectorstores import FAISS
+
 # from tqdm import tqdm
 from underthesea import word_tokenize
+
+from constants import DEFAULT_EMBEDDING_MODEL, PATHS
 
 bizlaw_short_dict = {
     "BCC": "hợp tác kinh doanh",
@@ -196,7 +199,14 @@ def tokenizer(text):
 from sentence_transformers import SentenceTransformer
 
 # Load the model from the local directory
-model = SentenceTransformer("models/embedding")
+MODEL_EMBEDDING_PATH = PATHS["MODEL_EMBEDDING"]
+if os.path.exists(MODEL_EMBEDDING_PATH):
+    model = SentenceTransformer(MODEL_EMBEDDING_PATH)
+else:
+    print("WTF?!!!!!! Model not found, loading default model")
+    model = SentenceTransformer(DEFAULT_EMBEDDING_MODEL)
+    model.save(MODEL_EMBEDDING_PATH)
+
 
 def get_embedding(text):
     return model.encode(text)
@@ -207,7 +217,7 @@ def load_chunks(file_path):
         return json.load(file)
 
 
-chunks = load_chunks("data/all_chunks_by_clauseWarticle.json")
+chunks = load_chunks(PATHS["CHUNK"])
 
 
 def get_question_embedding(question):

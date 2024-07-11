@@ -1,6 +1,6 @@
 import asyncio
 import httpx
-from app.backend.utils import get_prompt
+from utils import get_prompt
 
 
 async def stream_post_message(message: str):
