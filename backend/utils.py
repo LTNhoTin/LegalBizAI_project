@@ -85,7 +85,7 @@ def get_law_content(chunks: list[dict], chunk_ids: list[int]) -> str:
         title = chunks[each[0]]["passage"].split("\n")[0].strip()
         content = ["\n".join(chunks[id]["passage"].split("\n")[1:]) for id in each]
         contents.append(f"{title}\n" + "\n".join(content))
-    return "\n-----\n".join(contents)
+    return "\n---\n".join(contents)
 
 
 with open(PATHS["PROMPT_TEMPLATE"], "r", encoding="utf-8") as f_template:

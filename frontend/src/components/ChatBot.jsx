@@ -11,10 +11,11 @@ function ChatBot(props) {
     const inputRef = useRef(null);
     const [timeOfRequest, setTimeOfRequest] = useState(0);
     const [promptInput, setPromptInput] = useState('');
-    const [model, setModel] = useState('LegalbizAI');
+    const [model, setModel] = useState('legalbizai-gemini');
     const [chatHistory, setChatHistory] = useState([]);
     const [isLoading, setIsLoad] = useState(false);
     const [isGen, setIsGen] = useState(false);
+    const [counter, setCounter] = useState(0); // Thêm state counter
     const [dataChat, setDataChat] = useState([
         [
             'start',
@@ -24,6 +25,16 @@ function ChatBot(props) {
             ],
         ],
     ]);
+    const models = [
+        {
+            value: 'legalbizai-gemini',
+            name: 'LegalBizAI (Gemini)',
+        },
+        {
+            value: 'legalbizai-vistral-7b-chat',
+            name: 'LegalBizAI (Vistral 7B Chat)',
+        },
+    ];
 
     const commonQuestions = [
         'Doanh nghiệp do Nhà nước nắm giữ 100% vốn điều lệ bị xem xét giải thể trong các trường hợp nào?',
@@ -52,6 +63,26 @@ function ChatBot(props) {
         return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+        let interval = null;
+        if (isLoading) {
+            setCounter(1); // Reset counter to 1 when loading starts
+            interval = setInterval(() => {
+                setCounter((prevCounter) => {
+                    if (prevCounter < 30) {
+                        return prevCounter + 1;
+                    } else {
+                        clearInterval(interval);
+                        return prevCounter;
+                    }
+                });
+            }, 1000);
+        } else {
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [isLoading]);
+
     const scrollToEndChat = () => {
         messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
     };
@@ -70,10 +101,10 @@ function ChatBot(props) {
             setChatHistory((prev) => [promptInput, ...prev]);
 
             try {
-                const result = await sendMessageChatService(promptInput);
+                const result = await sendMessageChatService(promptInput, model);
                 setDataChat((prev) => [
                     ...prev,
-                    ['start', [result.answer, result.source_documents, model]],
+                    ['start', [result.result, result.source_documents, model]],
                 ]);
             } catch (error) {
                 console.log(error);
@@ -123,8 +154,9 @@ function ChatBot(props) {
                     onChange={(e) => setModel(e.target.value)}
                     className="w-3/4 p-2 border rounded-lg shadow-md bg-white"
                 >
-                    <option value="LegalbizAI">LegalbizAI</option>
-                    <option value="LegalbizAI_gpt">LegalbizAI_gpt</option>
+                    {models.map((model) => (
+                        <option value={model.value}>{model.name}</option>
+                    ))}
                 </select>
             </div>
 
@@ -160,16 +192,35 @@ function ChatBot(props) {
                         Chọn Mô hình
                     </h2>
                     <ul className="menu">
-                        <li>
+                        {models.map((item) => (
+                            <li>
+                                <label className="label cursor-pointer">
+                                    <span className="label-text font-medium">
+                                        {item.name}
+                                    </span>
+                                    <input
+                                        type="radio"
+                                        name="radio-10"
+                                        value={item.value}
+                                        checked={model === item.value}
+                                        onChange={(e) =>
+                                            setModel(e.target.value)
+                                        }
+                                        className="radio checked:bg-blue-500"
+                                    />
+                                </label>
+                            </li>
+                        ))}
+                        {/* <li>
                             <label className="label cursor-pointer">
                                 <span className="label-text font-medium">
-                                    LegalbizAI
+                                    LegalBizAI
                                 </span>
                                 <input
                                     type="radio"
                                     name="radio-10"
-                                    value="LegalbizAI"
-                                    checked={model === 'LegalbizAI'}
+                                    value="LegalBizAI"
+                                    checked={model === 'LegalBizAI'}
                                     onChange={(e) => setModel(e.target.value)}
                                     className="radio checked:bg-blue-500"
                                 />
@@ -178,18 +229,18 @@ function ChatBot(props) {
                         <li>
                             <label className="label cursor-pointer">
                                 <span className="label-text font-medium">
-                                    LegalbizAI_gpt
+                                    LegalBizAIPlus
                                 </span>
                                 <input
                                     type="radio"
                                     name="radio-10"
-                                    value="LegalbizAI_gpt"
-                                    checked={model === 'LegalbizAI_gpt'}
+                                    value="LegalBizAIPlus"
+                                    checked={model === 'LegalBizAIPlus'}
                                     onChange={(e) => setModel(e.target.value)}
                                     className="radio checked:bg-blue-500"
                                 />
                             </label>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 <div
@@ -306,6 +357,8 @@ function ChatBot(props) {
                                         loading={true}
                                         height={15}
                                     />
+                                    <span className="ml-2">{`${counter}/30s`}</span>{' '}
+                                    {/* Hiển thị bộ đếm cùng hàng */}
                                 </div>
                             </div>
                         </div>

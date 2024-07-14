@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const TIMEOUT = 30000;
+const TIMEOUT = 3 * 60 * 1000;
 
 const timeoutPromise = (ms) =>
     new Promise((_, reject) => {
@@ -15,11 +15,11 @@ const timeoutPromise = (ms) =>
         );
     });
 
-export const sendMessageChatService = async (promptInput) => {
+export const sendMessageChatService = async (promptInput, model) => {
     const endpoint = 'http://localhost:8000/stream';
 
     const response = await Promise.race([
-        axios.post(endpoint, { message: promptInput }),
+        axios.post(endpoint, { message: promptInput, model }),
         timeoutPromise(TIMEOUT),
     ]);
 
