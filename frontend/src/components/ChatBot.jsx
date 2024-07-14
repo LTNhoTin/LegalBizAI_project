@@ -7,11 +7,28 @@ import robot_img from '../assets/ic5.png';
 import { sendMessageChatService } from './chatbotService';
 
 function ChatBot(props) {
+    const models = [
+        {
+            value: 'legalbizai-gemini',
+            name: 'LegalBizAI Pro',
+        },
+        {
+            value: 'legalbizai-vistral',
+            name: 'LegalBizAI V1',
+        },
+    ];
+
+    const getModelName = (value) => {
+        const idx = models.findIndex((item) => item.value == value);
+        if (idx != -1) return models[idx].name;
+        return models[0].name;
+    };
+
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
     const [timeOfRequest, setTimeOfRequest] = useState(0);
     const [promptInput, setPromptInput] = useState('');
-    const [model, setModel] = useState('legalbizai-gemini');
+    const [model, setModel] = useState(models[0].value);
     const [chatHistory, setChatHistory] = useState([]);
     const [isLoading, setIsLoad] = useState(false);
     const [isGen, setIsGen] = useState(false);
@@ -25,16 +42,6 @@ function ChatBot(props) {
             ],
         ],
     ]);
-    const models = [
-        {
-            value: 'legalbizai-gemini',
-            name: 'LegalBizAI (Gemini)',
-        },
-        {
-            value: 'legalbizai-vistral-7b-chat',
-            name: 'LegalBizAI (Vistral 7B Chat)',
-        },
-    ];
 
     const commonQuestions = [
         'Doanh nghiệp do Nhà nước nắm giữ 100% vốn điều lệ bị xem xét giải thể trong các trường hợp nào?',
@@ -336,7 +343,8 @@ function ChatBot(props) {
                                     <>
                                         <div className="divider m-0"></div>
                                         <p className="font-light text-xs text-cyan-50">
-                                            Mô hình: {dataMessages[1][1]}
+                                            Mô hình:{' '}
+                                            {getModelName(dataMessages[1][1])}
                                         </p>
                                     </>
                                 </div>

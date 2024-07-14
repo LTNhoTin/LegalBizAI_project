@@ -3,9 +3,6 @@ import httpx
 
 
 async def generate_response(prompt):
-    print("LegalBizAI (Gemini) input text:")
-    print(prompt)
-
     url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBFxeqWY-1HJGl_1nnbAdtCo1CAWMjQ9Kc"
 
     payload = json.dumps({"contents": [{"parts": [{"text": prompt}]}]})

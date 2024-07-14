@@ -1,3 +1,4 @@
+import time
 from fastapi.middleware.cors import CORSMiddleware
 from utils import get_prompt, make_async
 from fastapi import FastAPI, Request
@@ -20,11 +21,9 @@ app.add_middleware(
 )
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBrsEuLPKV0zkGW3GLIbxupb2ANGOdg7sg"
 
-vistral7b.generate_response = make_async(vistral7b.generate_response)
-
 llm_call = {
     "legalbizai-gemini": gemini.generate_response,
-    "legalbizai-vistral-7b-chat": vistral7b.generate_response,
+    "legalbizai-vistral": make_async(vistral7b.generate_response),
 }
 
 DEFAULT_MODEL = "legalbizai-gemini"
@@ -41,8 +40,18 @@ async def stream_response(request: Request):
     if not prompt:
         return {"error": "Prompt is required"}
     # return StreamingResponse(stream_gemini_api(prompt), media_type="application/json")
-    data = await llm_call[model](prompt)
-    resp = {"result": data, "source_documents": None}
+    print("Model:", model)
+    print("Model prompt:", prompt, sep="\n")
+
+    start_time = time.time()
+    result = await llm_call[model](prompt)
+    execution_time = time.time() - start_time
+
+    print("Model answer:", result, sep="\n")
+    print(f"Executed time: {execution_time:.4f} seconds")
+    print("*" * 50)
+
+    resp = {"result": result, "source_documents": None}
     return resp
 
 

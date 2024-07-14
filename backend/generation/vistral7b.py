@@ -56,8 +56,6 @@ Hướng dẫn trả lời:
 def generate_response(input_text: str, max_length: int = 2000) -> str:
     # conversation = [{"role": "system", "content": system_prompt}]
     conversation = [{"role": "user", "content": input_text}]
-    print("LegalBizAI (Vistral 7B Chat) input text:")
-    print(input_text)
     input_ids = tokenizer.apply_chat_template(conversation, return_tensors="pt", add_generation_prompt=True).to(device)
     print("Input token count=", input_ids.size(1))
     out_ids = model.generate(
