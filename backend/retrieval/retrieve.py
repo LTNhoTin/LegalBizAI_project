@@ -12,7 +12,7 @@ import pandas as pd
 # from tqdm import tqdm
 from underthesea import word_tokenize
 
-from constants import DEFAULT_EMBEDDING_MODEL, PATHS
+from LegalBizAI_project.backend.constants import DEFAULT_EMBEDDING_MODEL, PATHS
 
 bizlaw_short_dict = {
     "BCC": "hợp tác kinh doanh",
@@ -179,9 +179,7 @@ stop_words_vn = set(
     ]
 )
 
-index_path = "data/faiss_index"
-
-faiss_index = faiss.read_index(index_path)
+faiss_index = faiss.read_index(PATHS["INDEXED_VECTOR_STORE"])
 
 
 def tokenizer(text):

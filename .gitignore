@@ -16,3 +16,7 @@ data/src/generaltools/tools_checkID/new/id_cof_clause.py
 *.pyc
 __pycache__/
 
+# env
+env/
+.env
+

@@ -1,6 +1,19 @@
 import orjson
-from retrieval.retrieve import retrieve
-from constants import PATHS
+from LegalBizAI_project.backend.retrieval.retrieve import retrieve
+from LegalBizAI_project.backend.constants import PATHS
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+from functools import wraps
+
+
+def make_async(sync_func):
+    @wraps(sync_func)
+    async def async_wrapper(*args, **kwargs):
+        loop = asyncio.get_event_loop()
+        with ThreadPoolExecutor() as pool:
+            return await loop.run_in_executor(pool, sync_func, *args, **kwargs)
+
+    return async_wrapper
 
 
 class ChunkLoader:
@@ -79,10 +92,10 @@ with open(PATHS["PROMPT_TEMPLATE"], "r", encoding="utf-8") as f_template:
     PROMPT_TEMPLATE = f_template.read()
 
 
-def get_prompt(question: str):
+def get_prompt(question: str, prompt_template=PROMPT_TEMPLATE):
     law_content = get_law_content(chunk_data._data, retrieve(question))
 
-    prompt = PROMPT_TEMPLATE.format(
+    prompt = prompt_template.format(
         question=question,
         answer="",
         law_content=law_content,
@@ -91,10 +104,4 @@ def get_prompt(question: str):
 
 
 # print(get_law_content(chunk_data._data, [1093, 1094, 1095, 1096, 1097]))
-
-
-print(
-    get_prompt(
-        "Hội đồng giải thể doanh nghiệp do Nhà nước nắm giữ 100% vốn điều lệ có được quyền sử dụng con dấu của doanh nghiệp hay không?"
-    )
-)
+# print(get_prompt("Vô ý làm chết người tấn công mình"))
