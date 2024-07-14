@@ -3,7 +3,7 @@ import ScaleLoader from 'react-spinners/ScaleLoader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMessage } from '@fortawesome/free-regular-svg-icons';
 import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
-import robot_img from '../assets/robot_image.png';
+import robot_img from '../assets/ic5.png';
 import { sendMessageChatService } from './chatbotService';
 
 function ChatBot(props) {
@@ -285,7 +285,7 @@ function ChatBot(props) {
                                 <div className="chat-image avatar">
                                     <div className="w-8 lg:w-10 rounded-full border-2 border-blue-500">
                                         <img
-                                            className="scale-150"
+                                            // className="scale-150"
                                             src={robot_img}
                                             alt="avatar"
                                         />

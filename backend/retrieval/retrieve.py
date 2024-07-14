@@ -1,5 +1,4 @@
 import json
-import os
 import re
 import unicodedata as ud
 
@@ -7,12 +6,12 @@ import faiss
 import numpy as np
 import pandas as pd
 
-# from langchain_community.vectorstores import FAISS
-
+# from configs.paths import relative_path
+# from langchain.vectorstores import FAISS
 # from tqdm import tqdm
-from underthesea import word_tokenize
+# from underthesea import word_tokenize
 
-from LegalBizAI_project.backend.constants import DEFAULT_EMBEDDING_MODEL, PATHS
+from LegalBizAI_project.backend.constants import PATHS
 
 bizlaw_short_dict = {
     "BCC": "hợp tác kinh doanh",
@@ -179,7 +178,8 @@ stop_words_vn = set(
     ]
 )
 
-faiss_index = faiss.read_index(PATHS["INDEXED_VECTOR_STORE"])
+index_path = PATHS["INDEXED_VECTOR_STORE"]
+faiss_index = faiss.read_index(index_path)
 
 
 def tokenizer(text):
@@ -197,13 +197,7 @@ def tokenizer(text):
 from sentence_transformers import SentenceTransformer
 
 # Load the model from the local directory
-MODEL_EMBEDDING_PATH = PATHS["MODEL_EMBEDDING"]
-if os.path.exists(MODEL_EMBEDDING_PATH):
-    model = SentenceTransformer(MODEL_EMBEDDING_PATH)
-else:
-    print("WTF?!!!!!! Model not found, loading default model")
-    model = SentenceTransformer(DEFAULT_EMBEDDING_MODEL)
-    model.save(MODEL_EMBEDDING_PATH)
+model = SentenceTransformer(PATHS["MODEL_EMBEDDING"])
 
 
 def get_embedding(text):
@@ -222,49 +216,56 @@ def get_question_embedding(question):
     return get_embedding(question)
 
 
-def get_full_article(chunk_ids: list[int]) -> dict:
-    """
-    description: get the full article passage of a chunk by id
+# def get_full_article(chunk_ids: list[int]) -> dict:
+#     """
+#     description: get the full article passage of a chunk by id
 
-    input:
-        chunks: list of chunk objects
-        chunk_id: the chunk id to be retrieved passage
-    output:
-        tuple: (concatenation of articles passage, all article chunk ids)
+#     input:
+#         chunks: list of chunk objects
+#         chunk_id: the chunk id to be retrieved passage
+#     output:
+#         tuple: (concatenation of articles passage, all article chunk ids)
 
-    notes:
-        Article: Điều
-        Clause: Khoản
-        Point: Điểm
-    """
-    articles_ids = set()
-    for chunk_id in chunk_ids:
-        if chunk_id in articles_ids:
-            continue
-        articles_ids.add(chunk_id)
-        chunk_title = chunks[chunk_id]["title"]
-        run_id = chunk_id - 1
-        while run_id >= 0 and chunks[run_id]["title"] == chunk_title:
-            articles_ids.add(run_id)
-            run_id -= 1
-        run_id = chunk_id + 1
-        while run_id < len(chunks) and chunks[run_id]["title"] == chunk_title:
-            articles_ids.add(run_id)
-            run_id += 1
-    articles_ids = sorted(articles_ids)
-    content_lines = []
-    chunk_title = ""
-    for id in articles_ids:
-        if chunk_title != chunks[id]["title"]:
-            chunk_title = chunks[id]["title"]
-            content_lines.append(chunk_title)
-        passage_lines = chunks[id]["passage"].splitlines()
-        content_lines.extend(passage_lines[1:])
-    content = "\n".join(content_lines)
-    return {"ids": articles_ids, "content": content}
+#     notes:
+#         Article: Điều
+#         Clause: Khoản
+#         Point: Điểm
+#     """
+#     articles_ids = set()
+#     for chunk_id in chunk_ids:
+#         if chunk_id in articles_ids:
+#             continue
+#         articles_ids.add(chunk_id)
+#         chunk_title = chunks[chunk_id]["title"]
+#         run_id = chunk_id - 1
+#         while run_id >= 0 and chunks[run_id]["title"] == chunk_title:
+#             articles_ids.add(run_id)
+#             run_id -= 1
+#         run_id = chunk_id + 1
+#         while run_id < len(chunks) and chunks[run_id]["title"] == chunk_title:
+#             articles_ids.add(run_id)
+#             run_id += 1
+#     articles_ids = sorted(articles_ids)
+#     content_lines = []
+#     chunk_title = ""
+#     for id in articles_ids:
+#         if chunk_title != chunks[id]["title"]:
+#             chunk_title = chunks[id]["title"]
+#             content_lines.append(chunk_title)
+#         passage_lines = chunks[id]["passage"].splitlines()
+#         content_lines.extend(passage_lines[1:])
+#     content = "\n".join(content_lines)
+#     return {"ids": articles_ids, "content": content}
 
 
 def retrieve(ques, topk=3):
     ques_embedding = model.encode(tokenizer(ques))
     _, I = faiss_index.search(np.array([ques_embedding]), k=topk)
-    return get_full_article(I[0].tolist())["ids"]
+    return I[0].tolist()
+
+
+print(
+    retrieve(
+        "Phòng Đăng ký kinh doanh phải chuyển tình trạng pháp lý của doanh nghiệp tư nhân trong Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp sang tình trạng đang làm thủ tục giải thể khi nào?"
+    )
+)

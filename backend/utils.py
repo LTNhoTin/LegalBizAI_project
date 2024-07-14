@@ -1,6 +1,8 @@
 import orjson
-from LegalBizAI_project.backend.retrieval.retrieve import retrieve
 from LegalBizAI_project.backend.constants import PATHS
+from retrieval.retrieve import retrieve
+
+# from configs.paths import relative_path
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from functools import wraps
@@ -20,6 +22,9 @@ class ChunkLoader:
     def __init__(self, chunk_path) -> None:
         with open(chunk_path, "rb") as f_data:
             self._data = orjson.loads(f_data.read())
+
+    def __getitem__(self, key):
+        return self._data[key]
 
 
 chunk_data = ChunkLoader(PATHS["CHUNK"])
@@ -82,20 +87,40 @@ def get_law_content(chunks: list[dict], chunk_ids: list[int]) -> str:
 
     contents = []
     for each in articles:
+        doc_name = chunks[each[0]]["root"]
         title = chunks[each[0]]["passage"].split("\n")[0].strip()
-        content = ["\n".join(chunks[id]["passage"].split("\n")[1:]) for id in each]
-        contents.append(f"{title}\n" + "\n".join(content))
-    return "\n---\n".join(contents)
+        content = [
+            (
+                "*" + "*\n\n*".join(chunks[id]["passage"].split("\n")[1:]) + "*"
+                if id in chunk_ids
+                else "\n\n".join(chunks[id]["passage"].split("\n")[1:])
+            )
+            for id in each
+        ]
+        contents.append((doc_name, (f"{title}\n\n" + "\n\n".join(content))))
+    pre_doc_name = ""
+    final = ""
+    for passage in contents:
+        if not final:
+            pre_doc_name = passage[0]
+            final = f"{pre_doc_name}\n\n{passage[1]}\n"
+        else:
+            if passage[0] == pre_doc_name:
+                final += f"\n{passage[1]}\n"
+            else:
+                pre_doc_name = passage[0]
+                final += f"---\n{pre_doc_name}\n\n{passage[1]}"
+    return final
 
 
 with open(PATHS["PROMPT_TEMPLATE"], "r", encoding="utf-8") as f_template:
     PROMPT_TEMPLATE = f_template.read()
 
 
-def get_prompt(question: str, prompt_template=PROMPT_TEMPLATE):
+def get_prompt(question: str):
     law_content = get_law_content(chunk_data._data, retrieve(question))
 
-    prompt = prompt_template.format(
+    prompt = PROMPT_TEMPLATE.format(
         question=question,
         answer="",
         law_content=law_content,
@@ -104,4 +129,10 @@ def get_prompt(question: str, prompt_template=PROMPT_TEMPLATE):
 
 
 # print(get_law_content(chunk_data._data, [1093, 1094, 1095, 1096, 1097]))
-# print(get_prompt("Vô ý làm chết người tấn công mình"))
+
+
+print(
+    get_prompt(
+        "Phòng Đăng ký kinh doanh phải chuyển tình trạng pháp lý của doanh nghiệp tư nhân trong Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp sang tình trạng đang làm thủ tục giải thể khi nào?"
+    )
+)
