@@ -131,8 +131,8 @@ def get_prompt(question: str):
 # print(get_law_content(chunk_data._data, [1093, 1094, 1095, 1096, 1097]))
 
 
-print(
-    get_prompt(
-        "Phòng Đăng ký kinh doanh phải chuyển tình trạng pháp lý của doanh nghiệp tư nhân trong Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp sang tình trạng đang làm thủ tục giải thể khi nào?"
-    )
-)
+# print(
+#     get_prompt(
+#         "Phòng Đăng ký kinh doanh phải chuyển tình trạng pháp lý của doanh nghiệp tư nhân trong Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp sang tình trạng đang làm thủ tục giải thể khi nào?"
+#     )
+# )
