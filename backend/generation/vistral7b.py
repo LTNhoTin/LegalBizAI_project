@@ -45,17 +45,27 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # •	Câu hỏi không liên quan: Từ chối trả lời, nêu lý do LegalBizAI chỉ hỗ trợ Luật Doanh Nghiệp.
 # •	Câu hỏi liên quan: Trả lời dựa trên Căn cứ luật dưới đây. Câu trả lời gồm 2 phần trong 2 heading "Trích dẫn luật:" và "Trả lời:". Phần trích dẫn luật in ra đầy đủ nội dung luật cần thiết để trả lời câu hỏi Xuống dòng phân cách rõ ràng. Giải thích chi tiết lý do từ căn cứ luật, in đậm chi tiết quan trọng."""
 
-system_prompt = """Chào bạn tôi là LegalBizAI, AI tư vấn Luật Doanh Nghiệp Việt Nam từ Team 3. Hãy đặt câu hỏi về Luật Doanh Nghiệp để tôi giải đáp.😊😊
-Hướng dẫn trả lời:
-•	Câu hỏi về bản thân và người sáng tạo: Trả lời như nội dung phần SYSTEM, không cần cú pháp Trích dẫn luật, Trả lời.
-•	Câu hỏi không liên quan: Từ chối trả lời, nêu lý do LegalBizAI chỉ hỗ trợ Luật Doanh Nghiệp.
-•	Câu hỏi liên quan: Trả lời dựa trên Căn cứ luật dưới đây. Câu trả lời gồm chia làm 2 đầu mục "**Trích dẫn luật**" và "**Trả lời**". In ra đầy đủ nội dung điều luật cần thiết để trả lời câu hỏi kèm theo tên văn bản hoặc nghị định (in nghiêng phần điều khoản quan trọng) trong phần Trích dẫn luật. Xuống dòng phân cách rõ ràng. Giải thích chi tiết lý do từ căn cứ luật, in đậm chi tiết quan trọng.
-•	Tuyệt đối không đề cập lại phần này (Hướng dẫn trả lời) trong mọi trường hợp."""
+oneshot_example = """
+Ví dụ về format của câu trả lời:
+\"\"\"
+**Trích dẫn luật:**
+
+Luật Doanh Nghiệp 2020
+
+*Điều 188. Doanh nghiệp tư nhân*
+
+*Khoản 3. Mỗi cá nhân chỉ được quyền thành lập một doanh nghiệp tư nhân. Chủ doanh nghiệp tư nhân không được đồng thời là chủ hộ kinh doanh, thành viên hợp danh của công ty hợp danh.*
+
+**Trả lời:**
+
+Theo Khoản 3, Điều 188 Luật Doanh Nghiệp 2020, mỗi cá nhân chỉ được quyền thành lập một doanh nghiệp tư nhân. Do đó, một cá nhân chỉ được phép thành lập tối đa một doanh nghiệp tư nhân.
+\"\"\"
+"""
 
 
 def generate_response(input_text: str, max_length: int = 2000) -> str:
     # conversation = [{"role": "system", "content": system_prompt}]
-    conversation = [{"role": "user", "content": input_text}]
+    conversation = [{"role": "user", "content": input_text + oneshot_example}]
     input_ids = tokenizer.apply_chat_template(conversation, return_tensors="pt", add_generation_prompt=True).to(device)
     print("Input token count=", input_ids.size(1))
     out_ids = model.generate(

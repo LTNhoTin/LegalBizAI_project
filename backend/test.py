@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "http://127.0.0.1:8000/vistral"
+url = "https://set-barnacle-refined.ngrok-free.app/vistral"
 
 # url = "https://dd0b-118-69-64-142.ngrok-free.app/v1/models/vistral`"
 

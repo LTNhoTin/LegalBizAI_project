@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 import logging
 
+from utils import make_async
 from generation import vistral7b  # Ensure this import is correct
 
 logging.basicConfig(level=logging.INFO)
@@ -22,7 +23,7 @@ app.add_middleware(
 )
 
 llm_call = {
-    "legalbizai-vistral": vistral7b.generate_response,  # Ensure this function is correct
+    "legalbizai-vistral": make_async(vistral7b.generate_response),  # Ensure this function is correct
 }
 
 DEFAULT_MODEL = "legalbizai-vistral"
@@ -39,8 +40,9 @@ async def stream_response(request: Request):
         return JSONResponse({"error": "Prompt is required"}, status_code=400)
 
     start_time = time.time()
-    result = llm_call[model](prompt)
+    result = await llm_call[model](prompt)
     execution_time = time.time() - start_time
+    logger.info(f"Executed time: {execution_time:.4f} seconds")
 
     resp = {"candidates": [{"content": {"parts": [{"text": result}]}}]}
     return JSONResponse(resp)
