@@ -1,6 +1,6 @@
 import orjson
 from LegalBizAI_project.backend.constants import PATHS
-from retrieval.retrieve import retrieve
+from LegalBizAI_project.backend.retrieval.retrieve import retrieve
 
 # from configs.paths import relative_path
 import asyncio
