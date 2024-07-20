@@ -82,7 +82,7 @@ LegalBizAI has successfully developed a robust AI system for business law, focus
 
 ## Demo
 
-[LegalBizAI Demo](https://ltnhotin.github.io/LegalbizAi_chatbot_UI/)
+[LegalBizAI Demo](https://ltnhotin.github.io/LegalbizAi_chatbot)
 
 ## Feedback
 
