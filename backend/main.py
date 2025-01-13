@@ -26,10 +26,10 @@ async def stream_get_answer(model, prompt):
     headers = {"Content-Type": "application/json"}
     
     if model == "LegalBizAI":
-        API_URL = 'http://127.0.0.1:7000/vistral'
+        API_URL = 'xxx'
 
     elif model == "LegalBizAI_pro":
-        API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBkOdlXM6HN9so1P7rA-Wr_bpwA6oEgZGA'
+        API_URL = 'xxx'
 
     async with httpx.AsyncClient(timeout=None) as client:
         res = await client.post(API_URL, headers=headers, data=payload)
