@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
-origins = ["http://127.0.0.1:8000/vistral"]
+origins = ["xxx"]
 
 app.add_middleware(
     CORSMiddleware,
